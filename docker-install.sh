@@ -23,14 +23,15 @@ if [ "$OS_ID" == "debian" ]; then
   # Debian 6 (squeeze)
   if [ "$OS_VERSION_MAJOR" == "6" ] || [ "$OS_CODENAME" == "squeeze" ]; then
     echo "Detected OS Debian 6 (squeeze)";
-    echo "Ready to install dependencies and run docker installation script...";
-    read -p "Press [Enter] key to continue...";
-    command -v sudo >/dev/null 2>&1 || { echo >&2 "Sudo is required but it's not installed. Aborting."; exit 1; }
-    sudo echo "deb http://http.debian.net/debian-backports squeeze-backports main" > /etc/apt/sources.list.d/squeeze-backports.list;
-    sudo apt-get update;
-    sudo apt-get -y install -t squeeze-backports linux-image-amd64;
-    sudo apt-get -y install curl;
-    curl -sSL https://get.docker.com/ | sudo sh;
+    echo "Kernel supported for this distribution release, 3.2.x (backports), is not compatible with docker. Aborting."; exit 1;
+    #echo "Ready to install dependencies and run docker installation script...";
+    #read -p "Press [Enter] key to continue...";
+    #command -v sudo >/dev/null 2>&1 || { echo >&2 "Sudo is required but it's not installed. Aborting."; exit 1; }
+    #sudo echo "deb http://http.debian.net/debian-backports squeeze-backports main" > /etc/apt/sources.list.d/squeeze-backports.list;
+    #sudo apt-get update;
+    #sudo apt-get -y install -t squeeze-backports linux-image-amd64;
+    #sudo apt-get -y install curl;
+    #curl -sSL https://get.docker.com/ | sudo sh;
   # Debian 7 (wheezy)
   elif [ "$OS_VERSION_MAJOR" == "7" ] || [ "$OS_CODENAME" == "wheezy" ]; then
     echo "Detected OS Debian 7 (wheezy)";
@@ -63,15 +64,39 @@ if [ "$OS_ID" == "ubuntu" ]; then
   # Ubuntu 10.04 (lucid)
   if [ "$OS_VERSION_MAJOR" == "10.04" ] || [ "$OS_CODENAME" == "lucid" ]; then
     echo "Detected OS Ubuntu 10.04 (lucid)";
+    echo "Kernel supported for this distribution release, 3.2.x (backports), is not compatible with docker. Aborting."; exit 1;
+    #echo "Ready to install dependencies and run docker installation script...";
+    #read -p "Press [Enter] key to continue...";
+    #command -v sudo >/dev/null 2>&1 || { echo >&2 "Sudo is required but it's not installed. Aborting."; exit 1; }
+    #sudo echo "deb http://archive.ubuntu.com/ubuntu lucid-backports main restricted universe multiverse" > /etc/apt/sources.list.d/lucid-backports.list;
+    #sudo apt-get update;
+    #sudo apt-get -y install -t lucid-backports linux-image-generic-lts-backport-oneiric;
+    #sudo apt-get -y install curl;
+    #curl -sSL https://get.docker.com/ | sudo sh;
   # Ubuntu 12.04 (precise)
   elif [ "$OS_VERSION_MAJOR" == "12.04" ] || [ "$OS_CODENAME" == "precise" ]; then
     echo "Detected OS Ubuntu 12.04 (precise)";
+    echo "Ready to install dependencies and run docker installation script...";
+    read -p "Press [Enter] key to continue...";
+    command -v sudo >/dev/null 2>&1 || { echo >&2 "Sudo is required but it's not installed. Aborting."; exit 1; }
+    sudo echo "deb http://archive.ubuntu.com/ubuntu precise-backports main restricted universe multiverse" > /etc/apt/sources.list.d/precise-backports.list;
+    sudo apt-get update;
+    sudo apt-get -y install -t precise-backports linux-image-generic-lts-trusty;
+    sudo apt-get -y install curl;
+    curl -sSL https://get.docker.com/ | sudo sh;
   # Ubuntu 14.04 (trusty)
   elif [ "$OS_VERSION_MAJOR" == "14.04" ] || [ "$OS_CODENAME" == "trusty" ]; then
     echo "Detected OS Ubuntu 14.04 (trusty)";
+    echo "Ready to install dependencies and run docker installation script...";
+    read -p "Press [Enter] key to continue...";
+    command -v sudo >/dev/null 2>&1 || { echo >&2 "Sudo is required but it's not installed. Aborting."; exit 1; }
+    sudo apt-get update;
+    sudo apt-get -y install curl;
+    curl -sSL https://get.docker.com/ | sudo sh;
   # Other versions
   else
     echo "Detected OS Ubuntu unknown version";
+    echo "Requirements may not be met. Aborting."; exit 1;
   fi;
 fi;
 
@@ -80,15 +105,39 @@ if [ "$OS_ID" == "linuxmint" ]; then
   # Linux Mint 9 (isadora)
   if [ "$OS_VERSION_MAJOR" == "9" ] || [ "$OS_CODENAME" == "isadora" ]; then
     echo "Detected OS Linux Mint 9 (isadora)";
+    echo "Kernel supported for this distribution release, 3.2.x (backports), is not compatible with docker. Aborting."; exit 1;
+    #echo "Ready to install dependencies and run docker installation script...";
+    #read -p "Press [Enter] key to continue...";
+    #command -v sudo >/dev/null 2>&1 || { echo >&2 "Sudo is required but it's not installed. Aborting."; exit 1; }
+    #sudo echo "deb http://archive.ubuntu.com/ubuntu lucid-backports main restricted universe multiverse" > /etc/apt/sources.list.d/lucid-backports.list;
+    #sudo apt-get update;
+    #sudo apt-get -y install -t lucid-backports linux-image-generic-lts-backport-oneiric;
+    #sudo apt-get -y install curl;
+    #curl -sSL https://get.docker.com/ | sudo sh;
   # Linux Mint 13 (maya)
   elif [ "$OS_VERSION_MAJOR" == "13" ] || [ "$OS_CODENAME" == "maya" ]; then
     echo "Detected OS Linux Mint 13 (maya)";
+    echo "Ready to install dependencies and run docker installation script...";
+    read -p "Press [Enter] key to continue...";
+    command -v sudo >/dev/null 2>&1 || { echo >&2 "Sudo is required but it's not installed. Aborting."; exit 1; }
+    sudo echo "deb http://archive.ubuntu.com/ubuntu precise-backports main restricted universe multiverse" > /etc/apt/sources.list.d/precise-backports.list;
+    sudo apt-get update;
+    sudo apt-get -y install -t precise-backports linux-image-generic-lts-trusty;
+    sudo apt-get -y install curl;
+    curl -sSL https://get.docker.com/ | sudo sh;
   # Linux Mint 17 (qiana)
   elif [ "$OS_VERSION_MAJOR" == "17" ] || [ "$OS_CODENAME" == "qiana" ]; then
     echo "Detected OS Linux Mint 17 (qiana)";
+    echo "Ready to install dependencies and run docker installation script...";
+    read -p "Press [Enter] key to continue...";
+    command -v sudo >/dev/null 2>&1 || { echo >&2 "Sudo is required but it's not installed. Aborting."; exit 1; }
+    sudo apt-get update;
+    sudo apt-get -y install curl;
+    curl -sSL https://get.docker.com/ | sudo sh;
   # Other versions
   else
     echo "Detected OS Linux Mint unknown version";
+    echo "Requirements may not be met. Aborting."; exit 1;
   fi;
 fi;
 
