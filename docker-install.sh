@@ -23,15 +23,38 @@ if [ "$OS_ID" == "debian" ]; then
   # Debian 6 (squeeze)
   if [ "$OS_VERSION_MAJOR" == "6" ] || [ "$OS_CODENAME" == "squeeze" ]; then
     echo "Detected OS Debian 6 (squeeze)";
+    echo "Ready to install dependencies and run docker installation script...";
+    read -p "Press [Enter] key to continue...";
+    command -v sudo >/dev/null 2>&1 || { echo >&2 "Sudo is required but it's not installed. Aborting."; exit 1; }
+    sudo echo "deb http://http.debian.net/debian-backports squeeze-backports main" > /etc/apt/sources.list.d/squeeze-backports.list;
+    sudo apt-get update;
+    sudo apt-get -y install -t squeeze-backports linux-image-amd64;
+    sudo apt-get -y install curl;
+    curl -sSL https://get.docker.com/ | sudo sh;
   # Debian 7 (wheezy)
   elif [ "$OS_VERSION_MAJOR" == "7" ] || [ "$OS_CODENAME" == "wheezy" ]; then
     echo "Detected OS Debian 7 (wheezy)";
+    echo "Ready to install dependencies and run docker installation script...";
+    read -p "Press [Enter] key to continue...";
+    command -v sudo >/dev/null 2>&1 || { echo >&2 "Sudo is required but it's not installed. Aborting."; exit 1; }
+    sudo echo "deb http://http.debian.net/debian wheezy-backports main" > /etc/apt/sources.list.d/wheezy-backports.list;
+    sudo apt-get update;
+    sudo apt-get -y install -t wheezy-backports linux-image-amd64;
+    sudo apt-get -y install curl;
+    curl -sSL https://get.docker.com/ | sudo sh;
   # Debian 8 (jessie)
   elif [ "$OS_VERSION_MAJOR" == "8" ] || [ "$OS_CODENAME" == "jessie" ]; then
-    echo "Detected OS Debian 7 (wheezy)";
+    echo "Detected OS Debian 8 (jessie)";
+    echo "Ready to install dependencies and run docker installation script...";
+    read -p "Press [Enter] key to continue...";
+    command -v sudo >/dev/null 2>&1 || { echo >&2 "Sudo is required but it's not installed. Aborting."; exit 1; }
+    sudo apt-get update;
+    sudo apt-get -y install curl;
+    curl -sSL https://get.docker.com/ | sudo sh;
   # Other versions
   else
     echo "Detected OS Debian unknown version";
+    echo "Requirements may not be met. Aborting."; exit 1;
   fi;
 fi;
 
