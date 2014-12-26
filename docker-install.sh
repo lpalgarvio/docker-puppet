@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Run system information script
-source ./System-info.sh;
+source ./system-info.sh;
 
 # Get Kernel information
 get_KERNEL_PRETTY_NAME KERNEL_PRETTY_NAME;
@@ -29,6 +29,9 @@ if [ "$OS_ID" == "debian" ]; then
   # Debian 8 (jessie)
   elif [ "$OS_VERSION_MAJOR" == "8" ] || [ "$OS_CODENAME" == "jessie" ]; then
     echo "Detected OS Debian 7 (wheezy)";
+  # Other versions
+  else
+    echo "Detected OS Debian unknown version";
   fi;
 fi;
 
@@ -77,6 +80,9 @@ if [ "$OS_ID" == "centos" ]; then
   # CentOS 7 (centos7)
   elif [ "$OS_VERSION_MAJOR" == "7" ] || [ "$OS_CODENAME" == "centos7" ]; then
     echo "Detected OS CentOS 7 (centos7)";
+  # Other versions
+  else
+    echo "Detected OS CentOS unknown version";
   fi;
 fi;
 

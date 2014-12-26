@@ -13,8 +13,6 @@ KERNEL[ARCH]=$(uname -m);
 KERNEL[BITS]=$(uname -m | sed 's/x86_//;s/i[3-6]86/32/');
 KERNEL[PRETTY_NAME]=$(uname -mrs);
 
-# TODO: MAJOR/MINOR
-
 # Create an associative array
 declare -A OS;
 
@@ -24,9 +22,12 @@ declare -A OS;
 # * Centos 7 (centos7)
 if [ -f /etc/centos-release ] ; then
   OS[ID]='centos';
+  OS[FAMILY_ID]='redhat';
   OS[VERSION_ID]=$(egrep -o '[0-9.]{1,}' /etc/centos-release);
   OS[VERSION_MAJOR]=$(echo ${OS[VERSION_ID]} | cut -f1 -d.);
+  OS[VERSION_MINOR]=$(echo ${OS[VERSION_ID]} | cut -f2 -d.);
   OS[NAME]=$(egrep -o '^[A-Za-z.]{1,}' /etc/centos-release);
+  OS[FAMILY]='Red Hat';
   OS[CODENAME]=${OS[ID]}${OS[VERSION_MAJOR]};
   OS[VERSION]="${OS[VERSION_ID]} (${OS[CODENAME]})";
   OS[PRETTY_NAME]="${OS[NAME]} ${OS[VERSION]}";
@@ -39,9 +40,12 @@ fi;
 # * and other versions
 if [ -f /etc/fedora-release ] ; then
   OS[ID]='fedora';
+  OS[FAMILY_ID]='redhat';
   OS[VERSION_ID]=$(egrep -o '[0-9.]{1,}' /etc/fedora-release);
   OS[VERSION_MAJOR]=${OS[VERSION_ID]};
+  OS[VERSION_MINOR]='0';
   OS[NAME]=$(egrep -o '^[A-Za-z.]{1,}' /etc/fedora-release);
+  OS[FAMILY]='Red Hat';
   OS[CODENAME]=$(head -n 1 /etc/issue.net | grep -oP '\(\K[^\)]+');
   OS[VERSION]="${OS[VERSION_ID]} (${OS[CODENAME]})";
   OS[PRETTY_NAME]="${OS[NAME]} ${OS[VERSION]}";
@@ -52,10 +56,13 @@ fi;
 # * Debian 7 (wheezy)
 # * Debian 8 (jessie)
 if [ -f /etc/debian_version ] ; then
-  OS[ID]="debian";
+  OS[ID]='debian';
+  OS[FAMILY_ID]='debian';
   OS[VERSION_ID]=$(cat /etc/debian_version);
   OS[VERSION_MAJOR]=$(echo ${OS[VERSION_ID]} | cut -f1 -d.);
+  OS[VERSION_MINOR]=$(echo ${OS[VERSION_ID]} | cut -f2 -d.);
   OS[NAME]=$(sed 's/[0-9]*//g' /etc/issue.net);
+  OS[FAMILY]='Debian';
   OS[CODENAME]=$(cat /etc/apt/sources.list | rev | cut -d ' ' -f 2 | rev | grep -v 'updates');
   OS[VERSION]="${OS[VERSION_ID]} (${OS[CODENAME]})";
   OS[PRETTY_NAME]=$(awk 'BEGIN{RS=ORS=" "}!a[$0]++' <<< "${OS[NAME]} ${OS[VERSION]}");
@@ -67,11 +74,14 @@ fi;
 # * Ubuntu 14.04 (trusty)
 # * and other versions
 if [ -f /etc/lsb-release ] ; then
-  . /etc/lsb-release;
+  source /etc/lsb-release;
   OS[ID]=$(echo $DISTRIB_ID | tr '[:upper:]' '[:lower:]');
+  OS[FAMILY_ID]='debian';
   OS[VERSION_ID]=$DISTRIB_RELEASE;
   OS[VERSION_MAJOR]=$(echo ${OS[VERSION_ID]} | cut -f1 -d.);
+  OS[VERSION_MINOR]=$(echo ${OS[VERSION_ID]} | cut -f2 -d.);
   OS[NAME]=$DISTRIB_ID;
+  OS[FAMILY]='Debian';
   OS[CODENAME]=$DISTRIB_CODENAME;
   OS[VERSION]="${OS[VERSION_ID]} (${OS[CODENAME]})";
   OS[PRETTY_NAME]="${OS[NAME]} ${OS[VERSION]}";
@@ -87,10 +97,12 @@ fi;
 #if [ -f /etc/os-release ] ; then
 #  . /etc/os-release;
 #  OS[ID]=$ID;
+#  OS[FAMILY_ID]='';
 #  OS[VERSION_ID]=$VERSION_ID;
 #  OS[VERSION_MAJOR]=$(echo ${OS[VERSION_ID]} | cut -f1 -d.);
+#  OS[VERSION_MINOR]=$(echo ${OS[VERSION_ID]} | cut -f2 -d.);
 #  OS[NAME]=$NAME;
-#  #OS[CODENAME]="";
+#  OS[CODENAME]='';
 #  OS[VERSION]="${OS[VERSION_ID]} (${OS[CODENAME]})";
 #  OS[PRETTY_NAME]="${OS[NAME]} ${OS[VERSION]}";
 #fi;
@@ -98,8 +110,6 @@ fi;
 # TODO: lsb_release
 
 # TODO: facter
-
-# TODO: MINOR
 
 # Get KERNEL HOST
 function get_KERNEL_HOST() {
