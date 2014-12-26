@@ -1,8 +1,17 @@
 #!/bin/bash
+#title           :docker-cleanup.sh
+#description     :Cleans up images made for Docker with `docker rmi`.
+#author		 :lpalgarvio <"lp.algarvio@gmail.com">
+#date            :20141226
+#version         :0.2
+#usage		 :bash docker-rmi.sh
+#notes           :Run docker-install.sh first to install the dependencies.
+#bash_version    :4.1.5(1)-release
+#==============================================================================
 
 # Set formatting
-bold=`tput bold`
-normal=`tput sgr0`
+bold=`tput bold`;
+normal=`tput sgr0`;
 
 # Set defaults
 cleanup_debian=true;
@@ -13,7 +22,7 @@ cleanup_untagged=true;
 
 # Cleanup Debian images?
 while true; do
-    read -p "Cleanup ${bold}Debian${normal} images of Docker? [${bold}y${normal}/n] " yn
+    read -p "Cleanup ${bold}Debian${normal} images of Docker? [${bold}y${normal}/n] " yn;
     case $yn in
         [Yy]* ) cleanup_debian=true; break;;
         [Nn]* ) cleanup_debian=false; break;;
@@ -23,7 +32,7 @@ done
 
 # Cleanup Ubuntu images?
 while true; do
-    read -p "Cleanup ${bold}Ubuntu${normal} images of Docker? [${bold}y${normal}/n] " yn
+    read -p "Cleanup ${bold}Ubuntu${normal} images of Docker? [${bold}y${normal}/n] " yn;
     case $yn in
         [Yy]* ) cleanup_ubuntu=true; break;;
         [Nn]* ) cleanup_ubuntu=false; break;;
@@ -33,7 +42,7 @@ done
 
 # Cleanup CentOS images?
 while true; do
-    read -p "Cleanup ${bold}CentOS${normal} images of Docker? [${bold}y${normal}/n] " yn
+    read -p "Cleanup ${bold}CentOS${normal} images of Docker? [${bold}y${normal}/n] " yn;
     case $yn in
         [Yy]* ) cleanup_centos=true; break;;
         [Nn]* ) cleanup_centos=false; break;;
@@ -43,7 +52,7 @@ done
 
 # Cleanup Fedora images?
 while true; do
-    read -p "Cleanup ${bold}Fedora${normal} images of Docker? [y/${bold}n${normal}] " yn
+    read -p "Cleanup ${bold}Fedora${normal} images of Docker? [y/${bold}n${normal}] " yn;
     case $yn in
         [Yy]* ) cleanup_fedora=true; break;;
         [Nn]* ) cleanup_fedora=false; break;;
@@ -53,7 +62,7 @@ done
 
 # Cleanup untagged images?
 while true; do
-    read -p "Cleanup ${bold}untagged${normal} images of Docker? [y/${bold}n${normal}] " yn
+    read -p "Cleanup ${bold}untagged${normal} images of Docker? [y/${bold}n${normal}] " yn;
     case $yn in
         [Yy]* ) cleanup_untagged=true; break;;
         [Nn]* ) cleanup_untagged=false; break;;
@@ -130,5 +139,5 @@ fi;
 
 # Show Docker images
 printf "\n\n${bold}Showing list of Docker images...${normal}\n";
-sudo docker images
+sudo docker images;
 

@@ -1,4 +1,13 @@
 #!/bin/bash
+#title           :system-info.sh
+#description     :Probes the system to get information for the OS and Kernel.
+#author		 :lpalgarvio <"lp.algarvio@gmail.com">
+#date            :20141226
+#version         :0.1
+#usage		 :bash system-info.sh
+#notes           :Should not be run. Required by docker-install.sh.
+#bash_version    :4.1.5(1)-release
+#==============================================================================
 
 # Create an associative array
 declare -A KERNEL;

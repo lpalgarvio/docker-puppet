@@ -1,4 +1,13 @@
 #!/bin/bash
+#title           :docker-install.sh
+#description     :Installs Docker and all the dependencies.
+#author		 :lpalgarvio <"lp.algarvio@gmail.com">
+#date            :20141226
+#version         :0.2
+#usage		 :bash docker-install.sh
+#notes           :Requires the sudo command and system-info.sh (bundled).
+#bash_version    :4.1.5(1)-release
+#==============================================================================
 
 # Run system information script
 source ./system-info.sh;

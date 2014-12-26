@@ -1,8 +1,17 @@
 #!/bin/bash
+#title           :docker-pull.sh
+#description     :Pulls original images for Docker with `docker pull`.
+#author		 :lpalgarvio <"lp.algarvio@gmail.com">
+#date            :20141226
+#version         :0.2
+#usage		 :bash docker-pull.sh
+#notes           :Run docker-install.sh first to install the dependencies.
+#bash_version    :4.1.5(1)-release
+#==============================================================================
 
 # Set formatting
-bold=`tput bold`
-normal=`tput sgr0`
+bold=`tput bold`;
+normal=`tput sgr0`;
 
 # Set defaults
 pull_debian=true;
@@ -12,7 +21,7 @@ pull_fedora=false;
 
 # Pull Debian images?
 while true; do
-    read -p "Pull ${bold}Debian${normal} images with Docker? [${bold}y${normal}/n] " yn
+    read -p "Pull ${bold}Debian${normal} images with Docker? [${bold}y${normal}/n] " yn;
     case $yn in
         [Yy]* ) pull_debian=true; break;;
         [Nn]* ) pull_debian=false; break;;
@@ -22,7 +31,7 @@ done
 
 # Pull Ubuntu images?
 while true; do
-    read -p "Pull ${bold}Ubuntu${normal} images with Docker? [${bold}y${normal}/n] " yn
+    read -p "Pull ${bold}Ubuntu${normal} images with Docker? [${bold}y${normal}/n] " yn;
     case $yn in
         [Yy]* ) pull_ubuntu=true; break;;
         [Nn]* ) pull_ubuntu=false; break;;
@@ -32,7 +41,7 @@ done
 
 # Pull CentOS images?
 while true; do
-    read -p "Pull ${bold}CentOS${normal} images with Docker? [${bold}y${normal}/n] " yn
+    read -p "Pull ${bold}CentOS${normal} images with Docker? [${bold}y${normal}/n] " yn;
     case $yn in
         [Yy]* ) pull_centos=true; break;;
         [Nn]* ) pull_centos=false; break;;
@@ -42,7 +51,7 @@ done
 
 # Pull Fedora images?
 while true; do
-    read -p "Pull ${bold}Fedora${normal} images with Docker? [y/${bold}n${normal}] " yn
+    read -p "Pull ${bold}Fedora${normal} images with Docker? [y/${bold}n${normal}] " yn;
     case $yn in
         [Yy]* ) pull_fedora=true; break;;
         [Nn]* ) pull_fedora=false; break;;
@@ -112,5 +121,5 @@ fi;
 
 # Show Docker images
 printf "\n\n${bold}Showing list of Docker images...${normal}\n";
-sudo docker images
+sudo docker images;
 

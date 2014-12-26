@@ -1,8 +1,17 @@
 #!/bin/bash
+#title           :docker-build.sh
+#description     :Builds images for Docker with `docker build`.
+#author		 :lpalgarvio <"lp.algarvio@gmail.com">
+#date            :20141226
+#version         :0.2
+#usage		 :bash docker-build.sh
+#notes           :Run docker-install.sh first to install the dependencies.
+#bash_version    :4.1.5(1)-release
+#==============================================================================
 
 # Set formatting
-bold=`tput bold`
-normal=`tput sgr0`
+bold=`tput bold`;
+normal=`tput sgr0`;
 
 # Set defaults
 build_debian=true;
@@ -12,7 +21,7 @@ build_fedora=false;
 
 # Build Debian images?
 while true; do
-    read -p "Build ${bold}Debian${normal} images with Docker? [${bold}y${normal}/n] " yn
+    read -p "Build ${bold}Debian${normal} images with Docker? [${bold}y${normal}/n] " yn;
     case $yn in
         [Yy]* ) build_debian=true; break;;
         [Nn]* ) build_debian=false; break;;
@@ -22,7 +31,7 @@ done
 
 # Build Ubuntu images?
 while true; do
-    read -p "Build ${bold}Ubuntu${normal} images with Docker? [${bold}y${normal}/n] " yn
+    read -p "Build ${bold}Ubuntu${normal} images with Docker? [${bold}y${normal}/n] " yn;
     case $yn in
         [Yy]* ) build_ubuntu=true; break;;
         [Nn]* ) build_ubuntu=false; break;;
@@ -32,7 +41,7 @@ done
 
 # Build CentOS images?
 while true; do
-    read -p "Build ${bold}CentOS${normal} images with Docker? [${bold}y${normal}/n] " yn
+    read -p "Build ${bold}CentOS${normal} images with Docker? [${bold}y${normal}/n] " yn;
     case $yn in
         [Yy]* ) build_centos=true; break;;
         [Nn]* ) build_centos=false; break;;
@@ -42,7 +51,7 @@ done
 
 # Build Fedora images?
 while true; do
-    read -p "Build ${bold}Fedora${normal} images with Docker? [y/${bold}n${normal}] " yn
+    read -p "Build ${bold}Fedora${normal} images with Docker? [y/${bold}n${normal}] " yn;
     case $yn in
         [Yy]* ) build_fedora=true; break;;
         [Nn]* ) build_fedora=false; break;;
@@ -112,7 +121,7 @@ fi;
 
 # Show Docker images
 printf "\n\n${bold}Showing list of Docker images...${normal}\n";
-sudo docker images
+sudo docker images;
 
 # Instructions
 printf "\nType "\""sudo docker run -t -i <REPOSITORY>/<TAG> /bin/bash"\"" to run a image.\n";
