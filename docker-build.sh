@@ -56,13 +56,13 @@ if [ "$build_debian" = true ]; then
     read -p "Press [Enter] key to continue...";
     # Debian 6 (squeeze)
     printf "\n${bold}Debian 6 (squeeze)${normal}\n";
-    sudo docker build -t docker_puppet/debian_06 Docker/Debian/06_squeeze;
+    sudo docker build -t docker_puppet/debian:06_squeeze Docker/Debian/06_squeeze;
     # Debian 7 (wheezy)
     printf "\n${bold}Debian 7 (wheezy)${normal}\n";
-    sudo docker build -t docker_puppet/debian_07 Docker/Debian/07_wheezy;
+    sudo docker build -t docker_puppet/debian:07_wheezy Docker/Debian/07_wheezy;
     # Debian 8 (jessie)
     printf "\n${bold}Debian 8 (jessie)${normal}\n";
-    sudo docker build -t docker_puppet/debian_08 Docker/Debian/08_jessie;
+    sudo docker build -t docker_puppet/debian:08_jessie Docker/Debian/08_jessie;
 fi;
 
 # Run Docker build for Ubuntu images
@@ -71,13 +71,13 @@ if [ "$build_ubuntu" = true ]; then
     read -p "Press [Enter] key to continue...";
     # Ubuntu 10.04 (lucid)
     printf "\n${bold}Ubuntu 10.04 (lucid)${normal}\n";
-    sudo docker build -t docker_puppet/ubuntu_10.04 Docker/Ubuntu/10.04_lucid;
+    sudo docker build -t docker_puppet/ubuntu:10.04_lucid Docker/Ubuntu/10.04_lucid;
     # Ubuntu 12.04 (precise)
     printf "\n${bold}Ubuntu 12.04 (precise)${normal}\n";
-    sudo docker build -t docker_puppet/ubuntu_12.04 Docker/Ubuntu/12.04_precise;
+    sudo docker build -t docker_puppet/ubuntu:12.04_precise Docker/Ubuntu/12.04_precise;
     # Ubuntu 14.04 (trusty)
     printf "\n${bold}Ubuntu 14.04 (trusty)${normal}\n";
-    sudo docker build -t docker_puppet/ubuntu_14.04 Docker/Ubuntu/14.04_trusty;
+    sudo docker build -t docker_puppet/ubuntu:14.04_trusty Docker/Ubuntu/14.04_trusty;
 fi;
 
 # Run Docker build for CentOS images
@@ -86,13 +86,13 @@ if [ "$build_centos" = true ]; then
     read -p "Press [Enter] key to continue...";
     # CentOS 5 (centos5)
     printf "\n${bold}CentOS 5 (centos5)${normal}\n";
-    sudo docker build -t docker_puppet/centos_05 Docker/CentOS/05_centos5;
+    sudo docker build -t docker_puppet/centos:05_centos5 Docker/CentOS/05_centos5;
     # CentOS 6 (centos6)
     printf "\n${bold}CentOS 6 (centos6)${normal}\n";
-    sudo docker build -t docker_puppet/centos_06 Docker/CentOS/06_centos6;
+    sudo docker build -t docker_puppet/centos:06_centos6 Docker/CentOS/06_centos6;
     # CentOS 7 (centos7)
     printf "\n${bold}CentOS 7 (centos7)${normal}\n";
-    sudo docker build -t docker_puppet/centos_07 Docker/CentOS/07_centos7;
+    sudo docker build -t docker_puppet/centos:07_centos7 Docker/CentOS/07_centos7;
 fi;
 
 # Run Docker build for Fedora images
@@ -101,16 +101,20 @@ if [ "$build_fedora" = true ]; then
     read -p "Press [Enter] key to continue...";
     # Fedora 6 (zod)
     printf "\n${bold}Fedora 6 (zod)${normal}\n";
-    sudo docker build -t docker_puppet/fedora_06 Docker/Fedora/06_zod;
+    sudo docker build -t docker_puppet/fedora:06_zod Docker/Fedora/06_zod;
     # Fedora 12 (constantine)
     printf "\n${bold}Fedora 12 (constantine)${normal}\n";
-    sudo docker build -t docker_puppet/fedora_12 Docker/Fedora/12_constantine;
+    sudo docker build -t docker_puppet/fedora:12_constantine Docker/Fedora/12_constantine;
     # Fedora 19 (schrodinger)
     printf "\n${bold}Fedora 19 (schrodinger)${normal}\n";
-    sudo docker build -t docker_puppet/fedora_19 Docker/Fedora/19_schrodinger;
+    sudo docker build -t docker_puppet/fedora:19_schrodinger Docker/Fedora/19_schrodinger;
 fi;
 
 # Show Docker images
 printf "\n\n${bold}Showing list of Docker images...${normal}\n";
 sudo docker images
+
+# Instructions
+printf "\nType "\""sudo docker run -t -i <REPOSITORY>/<TAG> /bin/bash"\"" to run a image.\n";
+printf "Example: sudo docker run -t -i docker_puppet/debian:07_wheezy /bin/bash\n";
 
