@@ -40,7 +40,7 @@ if [ "$OS_ID" == "debian" ]; then
     #sudo apt-get update;
     #sudo apt-get -y install -t squeeze-backports linux-image-amd64;
     #sudo apt-get -y install curl;
-    #curl -sSL https://get.docker.com/ | sudo sh;
+    #sudo curl -sSL https://get.docker.com/ | sudo sh;
   # Debian 7 (wheezy)
   elif [ "$OS_VERSION_MAJOR" == "7" ] || [ "$OS_CODENAME" == "wheezy" ]; then
     echo "Detected OS Debian 7 (wheezy)";
@@ -51,7 +51,7 @@ if [ "$OS_ID" == "debian" ]; then
     sudo apt-get update;
     sudo apt-get -y install -t wheezy-backports linux-image-amd64;
     sudo apt-get -y install curl;
-    curl -sSL https://get.docker.com/ | sudo sh;
+    sudo curl -sSL https://get.docker.com/ | sudo sh;
   # Debian 8 (jessie)
   elif [ "$OS_VERSION_MAJOR" == "8" ] || [ "$OS_CODENAME" == "jessie" ]; then
     echo "Detected OS Debian 8 (jessie)";
@@ -60,7 +60,7 @@ if [ "$OS_ID" == "debian" ]; then
     command -v sudo >/dev/null 2>&1 || { echo >&2 "Sudo is required but it's not installed. Aborting."; exit 1; }
     sudo apt-get update;
     sudo apt-get -y install curl;
-    curl -sSL https://get.docker.com/ | sudo sh;
+    sudo curl -sSL https://get.docker.com/ | sudo sh;
   # Other versions
   else
     echo "Detected OS Debian unknown version";
@@ -81,7 +81,7 @@ if [ "$OS_ID" == "ubuntu" ]; then
     #sudo apt-get update;
     #sudo apt-get -y install -t lucid-backports linux-image-generic-lts-backport-oneiric;
     #sudo apt-get -y install curl;
-    #curl -sSL https://get.docker.com/ | sudo sh;
+    #sudo curl -sSL https://get.docker.com/ | sudo sh;
   # Ubuntu 12.04 (precise)
   elif [ "$OS_VERSION_MAJOR" == "12.04" ] || [ "$OS_CODENAME" == "precise" ]; then
     echo "Detected OS Ubuntu 12.04 (precise)";
@@ -92,7 +92,7 @@ if [ "$OS_ID" == "ubuntu" ]; then
     sudo apt-get update;
     sudo apt-get -y install -t precise-backports linux-image-generic-lts-trusty;
     sudo apt-get -y install curl;
-    curl -sSL https://get.docker.com/ | sudo sh;
+    sudo curl -sSL https://get.docker.com/ | sudo sh;
   # Ubuntu 14.04 (trusty)
   elif [ "$OS_VERSION_MAJOR" == "14.04" ] || [ "$OS_CODENAME" == "trusty" ]; then
     echo "Detected OS Ubuntu 14.04 (trusty)";
@@ -101,7 +101,7 @@ if [ "$OS_ID" == "ubuntu" ]; then
     command -v sudo >/dev/null 2>&1 || { echo >&2 "Sudo is required but it's not installed. Aborting."; exit 1; }
     sudo apt-get update;
     sudo apt-get -y install curl;
-    curl -sSL https://get.docker.com/ | sudo sh;
+    sudo curl -sSL https://get.docker.com/ | sudo sh;
   # Other versions
   else
     echo "Detected OS Ubuntu unknown version";
@@ -122,7 +122,7 @@ if [ "$OS_ID" == "linuxmint" ]; then
     #sudo apt-get update;
     #sudo apt-get -y install -t lucid-backports linux-image-generic-lts-backport-oneiric;
     #sudo apt-get -y install curl;
-    #curl -sSL https://get.docker.com/ | sudo sh;
+    #sudo curl -sSL https://get.docker.com/ | sudo sh;
   # Linux Mint 13 (maya)
   elif [ "$OS_VERSION_MAJOR" == "13" ] || [ "$OS_CODENAME" == "maya" ]; then
     echo "Detected OS Linux Mint 13 (maya)";
@@ -133,7 +133,7 @@ if [ "$OS_ID" == "linuxmint" ]; then
     sudo apt-get update;
     sudo apt-get -y install -t precise-backports linux-image-generic-lts-trusty;
     sudo apt-get -y install curl;
-    curl -sSL https://get.docker.com/ | sudo sh;
+    sudo curl -sSL https://get.docker.com/ | sudo sh;
   # Linux Mint 17 (qiana)
   elif [ "$OS_VERSION_MAJOR" == "17" ] || [ "$OS_CODENAME" == "qiana" ]; then
     echo "Detected OS Linux Mint 17 (qiana)";
@@ -142,7 +142,7 @@ if [ "$OS_ID" == "linuxmint" ]; then
     command -v sudo >/dev/null 2>&1 || { echo >&2 "Sudo is required but it's not installed. Aborting."; exit 1; }
     sudo apt-get update;
     sudo apt-get -y install curl;
-    curl -sSL https://get.docker.com/ | sudo sh;
+    sudo curl -sSL https://get.docker.com/ | sudo sh;
   # Other versions
   else
     echo "Detected OS Linux Mint unknown version";
@@ -155,15 +155,43 @@ if [ "$OS_ID" == "centos" ]; then
   # CentOS 5 (centos5)
   if [ "$OS_VERSION_MAJOR" == "5" ] || [ "$OS_CODENAME" == "centos5" ]; then
     echo "Detected OS CentOS 5 (centos5)";
+    echo "Kernel supported for this distribution release, 3.2.x (elrepo), is not compatible with docker. Aborting."; exit 1;
+    #echo "Ready to install dependencies and run docker installation script...";
+    #read -p "Press [Enter] key to continue...";
+    #command -v sudo >/dev/null 2>&1 || { echo >&2 "Sudo is required but it's not installed. Aborting."; exit 1; }
+    #sudo wget https://www.elrepo.org/RPM-GPG-KEY-elrepo.org;
+    #sudo rpm --import RPM-GPG-KEY-elrepo.org; sudo gpg --import RPM-GPG-KEY-elrepo.org;
+    #sudo rpm -Uvh http://www.elrepo.org/elrepo-release-5-5.el5.elrepo.noarch.rpm;
+    #sudo yum makecache;
+    #sudo yum -y --enablerepo=elrepo-kernel install kernel-lt;
+    #sudo yum -y install curl;
+    #sudo curl -sSL https://get.docker.com/ | sudo sh;
   # CentOS 6 (centos6)
   elif [ "$OS_VERSION_MAJOR" == "6" ] || [ "$OS_CODENAME" == "centos6" ]; then
     echo "Detected OS CentOS 6 (centos6)";
+    echo "Ready to install dependencies and run docker installation script...";
+    read -p "Press [Enter] key to continue...";
+    command -v sudo >/dev/null 2>&1 || { echo >&2 "Sudo is required but it's not installed. Aborting."; exit 1; }
+    sudo wget https://www.elrepo.org/RPM-GPG-KEY-elrepo.org;
+    sudo rpm --import RPM-GPG-KEY-elrepo.org; sudo gpg --import RPM-GPG-KEY-elrepo.org;
+    sudo rpm -Uvh http://www.elrepo.org/elrepo-release-6-6.el6.elrepo.noarch.rpm;
+    sudo yum makecache;
+    sudo yum -y --enablerepo=elrepo-kernel install kernel-lt;
+    sudo yum -y install curl;
+    sudo curl -sSL https://get.docker.com/ | sudo sh;
   # CentOS 7 (centos7)
   elif [ "$OS_VERSION_MAJOR" == "7" ] || [ "$OS_CODENAME" == "centos7" ]; then
     echo "Detected OS CentOS 7 (centos7)";
+    echo "Ready to install dependencies and run docker installation script...";
+    read -p "Press [Enter] key to continue...";
+    command -v sudo >/dev/null 2>&1 || { echo >&2 "Sudo is required but it's not installed. Aborting."; exit 1; }
+    sudo yum makecache;
+    sudo yum -y install curl;
+    sudo curl -sSL https://get.docker.com/ | sudo sh;
   # Other versions
   else
     echo "Detected OS CentOS unknown version";
+    echo "Requirements may not be met. Aborting."; exit 1;
   fi;
 fi;
 
@@ -172,15 +200,24 @@ if [ "$OS_ID" == "fedora" ]; then
   # Fedora 6 (zod)
   if [ "$OS_VERSION_MAJOR" == "6" ] || [ "$OS_CODENAME" == "zod" ]; then
     echo "Detected OS Fedora 6 (zod)";
+    echo "Distribution is not supported by docker. Aborting."; exit 1;
   # Fedora 12 (constantine)
   elif [ "$OS_VERSION_MAJOR" == "12" ] || [ "$OS_CODENAME" == "constantine" ]; then
     echo "Detected OS Fedora 12 (constantine)";
+    echo "Distribution is not supported by docker. Aborting."; exit 1;
   # Fedora 19 (schrodinger)
   elif [ "$OS_VERSION_MAJOR" == "19" ] || [ "$OS_CODENAME" == "schrodinger" ]; then
     echo "Detected OS Fedora 19 (schrodinger)";
+    echo "Ready to install dependencies and run docker installation script...";
+    read -p "Press [Enter] key to continue...";
+    command -v sudo >/dev/null 2>&1 || { echo >&2 "Sudo is required but it's not installed. Aborting."; exit 1; }
+    sudo yum makecache;
+    sudo yum -y install curl;
+    sudo curl -sSL https://get.docker.com/ | sudo sh;
   # Other versions
   else
     echo "Detected OS Fedora unknown version";
+    echo "Requirements may not be met. Aborting."; exit 1;
   fi;
 fi;
 
