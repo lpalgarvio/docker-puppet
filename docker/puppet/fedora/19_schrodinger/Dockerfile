@@ -1,5 +1,5 @@
 ###############################################################################
-# Docker profile
+# Provisionous Docker/Puppet profile
 # OS: Fedora 19 (schrodinger)
 # Equivalent: RHEL 7, CentOS 7 (centos7)
 ###############################################################################

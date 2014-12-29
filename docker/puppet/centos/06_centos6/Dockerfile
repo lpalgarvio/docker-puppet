@@ -1,5 +1,5 @@
 ###############################################################################
-# Docker profile
+# Provisionous Docker/Puppet profile
 # OS: CentOS 6 (centos6)
 # Equivalent: RHEL 6, Fedora 12 (constantine)
 ###############################################################################

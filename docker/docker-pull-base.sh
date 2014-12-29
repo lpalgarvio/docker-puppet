@@ -1,10 +1,10 @@
 #!/bin/bash
-#title           :docker-pull.sh
-#description     :Pulls original images for Docker with `docker pull`.
+#title           :docker-pull-base.sh
+#description     :Pulls base images for Docker with `docker pull`.
 #author		 :lpalgarvio <"lp.algarvio@gmail.com">
 #date            :20141226
 #version         :0.2
-#usage		 :bash docker-pull.sh
+#usage		 :bash docker-pull-base.sh
 #notes           :Run docker-install.sh first to install the dependencies.
 #bash_version    :4.1.5(1)-release
 #==============================================================================
@@ -19,9 +19,9 @@ pull_ubuntu=true;
 pull_centos=true;
 pull_fedora=false;
 
-# Pull Debian images?
+# Pull base Debian images?
 while true; do
-    read -p "Pull ${bold}Debian${normal} images with Docker? [${bold}y${normal}/n] " yn;
+    read -p "Pull base ${bold}Debian${normal} images with Docker? [${bold}y${normal}/n] " yn;
     case $yn in
         [Yy]* ) pull_debian=true; break;;
         [Nn]* ) pull_debian=false; break;;
@@ -29,9 +29,9 @@ while true; do
     esac
 done
 
-# Pull Ubuntu images?
+# Pull base Ubuntu images?
 while true; do
-    read -p "Pull ${bold}Ubuntu${normal} images with Docker? [${bold}y${normal}/n] " yn;
+    read -p "Pull base ${bold}Ubuntu${normal} images with Docker? [${bold}y${normal}/n] " yn;
     case $yn in
         [Yy]* ) pull_ubuntu=true; break;;
         [Nn]* ) pull_ubuntu=false; break;;
@@ -39,9 +39,9 @@ while true; do
     esac
 done
 
-# Pull CentOS images?
+# Pull base CentOS images?
 while true; do
-    read -p "Pull ${bold}CentOS${normal} images with Docker? [${bold}y${normal}/n] " yn;
+    read -p "Pull base ${bold}CentOS${normal} images with Docker? [${bold}y${normal}/n] " yn;
     case $yn in
         [Yy]* ) pull_centos=true; break;;
         [Nn]* ) pull_centos=false; break;;
@@ -49,9 +49,9 @@ while true; do
     esac
 done
 
-# Pull Fedora images?
+# Pull base Fedora images?
 while true; do
-    read -p "Pull ${bold}Fedora${normal} images with Docker? [y/${bold}n${normal}] " yn;
+    read -p "Pull base ${bold}Fedora${normal} images with Docker? [y/${bold}n${normal}] " yn;
     case $yn in
         [Yy]* ) pull_fedora=true; break;;
         [Nn]* ) pull_fedora=false; break;;
@@ -59,9 +59,9 @@ while true; do
     esac
 done
 
-# Run Docker pull for Debian images
+# Run Docker pull for base Debian images
 if [ "$pull_debian" = true ]; then
-    printf "\n\n${bold}Pulling Debian images with Docker...${normal}\n";
+    printf "\n\n${bold}Pulling base Debian images with Docker...${normal}\n";
     read -p "Press [Enter] key to continue...";
     # Debian 6 (squeeze)
     printf "\n${bold}Debian 6 (squeeze)${normal}\n";
@@ -74,9 +74,9 @@ if [ "$pull_debian" = true ]; then
     sudo docker pull debian:jessie;
 fi;
 
-# Run Docker pull for Ubuntu images
+# Run Docker pull for base Ubuntu images
 if [ "$pull_ubuntu" = true ]; then
-    printf "\n\n${bold}Pulling Ubuntu images with Docker...${normal}\n";
+    printf "\n\n${bold}Pulling base Ubuntu images with Docker...${normal}\n";
     read -p "Press [Enter] key to continue...";
     # Ubuntu 10.04 (lucid)
     printf "\n${bold}Ubuntu 10.04 (lucid)${normal}\n";
@@ -89,9 +89,9 @@ if [ "$pull_ubuntu" = true ]; then
     sudo docker pull ubuntu:trusty;
 fi;
 
-# Run Docker pull for CentOS images
+# Run Docker pull for base CentOS images
 if [ "$pull_centos" = true ]; then
-    printf "\n\n${bold}Pulling CentOS images with Docker...${normal}\n";
+    printf "\n\n${bold}Pulling base CentOS images with Docker...${normal}\n";
     read -p "Press [Enter] key to continue...";
     # CentOS 5 (centos5)
     printf "\n${bold}CentOS 5 (centos5)${normal}\n";
@@ -104,9 +104,9 @@ if [ "$pull_centos" = true ]; then
     sudo docker pull centos:centos7;
 fi;
 
-# Run Docker pull for Fedora images
+# Run Docker pull for base Fedora images
 if [ "$pull_fedora" = true ]; then
-    printf "\n\n${bold}Pulling Fedora images with Docker...${normal}\n";
+    printf "\n\n${bold}Pulling base Fedora images with Docker...${normal}\n";
     read -p "Press [Enter] key to continue...";
     # Fedora 6 (zod)
     printf "\n${bold}Fedora 6 (zod)${normal}\n";

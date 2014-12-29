@@ -10,7 +10,7 @@
 #==============================================================================
 
 # Run system information script
-source ./system-info.sh;
+source ../common/system-info.sh;
 
 # Get Kernel information
 get_KERNEL_PRETTY_NAME KERNEL_PRETTY_NAME;
