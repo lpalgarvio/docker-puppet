@@ -38,6 +38,7 @@ function docker_clean_distro_tag() {
     # Run `docker rmi` for a tag
     printf "\n${bold}${tag_desc}${normal}\n";
     echo "sudo docker rmi -f ${tag_url}";
+    sudo docker rmi -f ${tag_url};
   else
     # Show error and exit
     echo "No match for distro/tag."; exit $E_BADARGS;
@@ -87,6 +88,7 @@ function docker_pull_distro_tag() {
     # Run `docker pull` for tag
     printf "\n${bold}${tag_desc}${normal}\n";
     echo "sudo docker pull ${tag_url}";
+    sudo docker pull ${tag_url};
   else
     # Show error and exit
     echo "No match for distro/tag."; exit $E_BADARGS;
@@ -136,6 +138,7 @@ function docker_build_distro_tag() {
     # Run `docker build` for tag
     printf "\n${bold}${tag_desc}${normal}\n";
     echo "sudo docker build -t ${tag_url} ${tag_path}";
+    sudo docker build -t ${tag_url} ${tag_path};
   else
     # Show error and exit
     echo "No match for distro/tag."; exit $E_BADARGS;

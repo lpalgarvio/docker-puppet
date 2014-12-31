@@ -5,8 +5,8 @@
 #date            :20141231
 #version         :0.5
 #usage		 :bash provisionous.sh [arg1] [arg2] [arg3] [arg4]
-#notes		 :Run docker-install.sh first to install the dependencies.
-#bash_version    :4.1.5(1)-release
+#notes		 :Run scripts in install directory to install the dependencies.
+#bash_version    :4.2
 #==============================================================================
 
 #
