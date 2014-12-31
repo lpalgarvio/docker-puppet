@@ -137,8 +137,8 @@ function docker_build_distro_tag() {
   if [ "$retval" -eq 1 ]; then
     # Run `docker build` for tag
     printf "\n${bold}${tag_desc}${normal}\n";
-    echo "sudo docker build -t ${tag_url} ${tag_path}";
-    sudo docker build -t ${tag_url} ${tag_path};
+    echo "sudo docker build -t ${tag_url} ${docker_puppet_path}/${arg_distro}/${tag_path}";
+    sudo docker build -t ${tag_url} ${docker_puppet_path}/${arg_distro}/${tag_path};
   else
     # Show error and exit
     echo "No match for distro/tag."; exit $E_BADARGS;
