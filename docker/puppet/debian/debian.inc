@@ -1,0 +1,59 @@
+#!/bin/bash
+#title		:debian.inc
+#description	:Configuration for Docker/Puppet/Debian/* images
+#author		:lpalgarvio <"lp.algarvio@gmail.com">
+#date		:20141231
+#version	:0.5
+#usage		:-
+#notes		:-
+#bash_version	:4.1.5(1)-release
+#==============================================================================
+
+#
+# Distribution information
+#
+
+# Debian GNU/Linux
+declare -A distro_info;
+distro_info['status']=true;
+distro_info['family']='debian';
+distro_info['codename']='debian';
+distro_info['title']='Debian';
+distro_info['desc']='Docker/Puppet/Debian';
+distro_info['path']='debian';
+distro_info['tags']='06,07,08';
+
+#
+# Distribution releases/tags
+#
+
+# Debian 6 (squeeze)
+declare -A distro_tag_06;
+distro_tag_06['status']=true;
+distro_tag_06['version']='6';
+distro_tag_06['codename']='squeeze';
+distro_tag_06['title']='Debian 6 (squeeze)';
+distro_tag_06['desc']='Docker/Puppet/Debian/6 (squeeze)';
+distro_tag_06['url']="solict/provisionous-puppet-debian:squeeze";
+distro_tag_06['path']='06_squeeze';
+
+# Debian 7 (wheezy)
+declare -A distro_tag_07;
+distro_tag_07['status']=true;
+distro_tag_07['version']='7';
+distro_tag_07['codename']='wheezy';
+distro_tag_07['title']='Debian 7 (wheezy)';
+distro_tag_07['desc']='Docker/Puppet/Debian/7 (wheezy)';
+distro_tag_07['url']="solict/provisionous-puppet-debian:wheezy";
+distro_tag_07['path']='07_wheezy';
+
+# Debian 8 (jessie)
+declare -A distro_tag_08;
+distro_tag_08['status']=true;
+distro_tag_08['version']='8';
+distro_tag_08['codename']='jessie';
+distro_tag_08['title']='Debian 8 (jessie)';
+distro_tag_08['desc']='Docker/Puppet/Debian/8 (jessie)';
+distro_tag_08['url']="solict/provisionous-puppet-debian:jessie";
+distro_tag_08['path']='08_jessie';
+
