@@ -10,7 +10,7 @@
 #==============================================================================
 
 #
-# Load configuration and scripts
+# Initialization
 #
 
 # Import global configuration
@@ -33,6 +33,10 @@ arg_provisioner=$1;
 arg_command=$2;
 arg_distro=$3;
 arg_tag=$4;
+
+#
+# Decision-makers
+#
 
 # Validate provisioner
 case $arg_provisioner in
