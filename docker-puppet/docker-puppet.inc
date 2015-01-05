@@ -59,6 +59,16 @@ function docker_clean_distro_tags() {
   generic_iterate_distro_tags $arg_distro 'docker_clean_distro_tag';
 }
 
+# Clean all tags for all distros
+function docker_clean_distros() {
+  # Debugging
+  if [ $debug = true ]; then
+    echo "Function: docker_clean_distros";
+  fi;
+  # TODO
+  exit 0;
+}
+
 #
 # Pull distros/tags
 #
@@ -109,6 +119,16 @@ function docker_pull_distro_tags() {
   generic_iterate_distro_tags $arg_distro 'docker_pull_distro_tag';
 }
 
+# Pull all tags for all distros
+function docker_pull_distros() {
+  # Debugging
+  if [ $debug = true ]; then
+    echo "Function: docker_pull_distros";
+  fi;
+  # TODO
+  exit 0;
+}
+
 #
 # Build distros/tags
 #
@@ -157,6 +177,16 @@ function docker_build_distro_tags() {
   generic_load_distro_config 'docker-puppet' $arg_distro;
   # Call function to iterate on distro tags
   generic_iterate_distro_tags $arg_distro 'docker_build_distro_tag';
+}
+
+# Build all tags for all distros
+function docker_build_distros() {
+  # Debugging
+  if [ $debug = true ]; then
+    echo "Function: docker_build_distros";
+  fi;
+  # TODO
+  exit 0;
 }
 
 #
