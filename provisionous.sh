@@ -19,8 +19,46 @@ source "./config.inc";
 # Import scripts
 source "./${functions_inc}";
 
+# Initialize formatting
+init_formatting;
+
+# Get the options
+declare -g opts='';
+opts=`getopt --options "af" --longoptions "all,force" -- "$@"`;
+
+# Validate the options
+if [ $? != 0 ]; then
+  # Call function to show error and quit
+  message_error 'An invalid option was provided.';
+fi;
+
+# Store the options
+eval set -- "$opts";
+while true ; do
+  case "$1" in
+    # Option `all`
+    -a|--all )
+      # Enable option
+      opts_all=true;
+      options+=$1;
+      shift;
+      ;;
+    # Option `force`
+    -f|--force )
+      # Enable option
+      opts_force=true;
+      options+=$1;
+      shift;
+      ;;
+    # Don't stall
+    --)
+      shift;
+      break;;
+  esac;
+done;
+
 # Store the arguments
-declare -g args_all="$*";
+declare -g args="$*";
 declare -g args_provisioner=$1;
 declare -g args_command=$2;
 declare -g args_distro=$3;
@@ -28,7 +66,8 @@ declare -g args_tag=$4;
 
 # Debugging
 if [ $debug = true ]; then
-  echo "Arguments: ${args_all}";
+  message_info 'Options:' ${options};
+  message_info 'Arguments:' ${args};
 fi;
 
 #
@@ -49,18 +88,30 @@ case $args_provisioner in
     ;;
   # Empty argument
   '' )
-    # Call function to show arguments and exit
-    echo "No provisioner was provided."; argument_instructions; exit $E_BADARGS;
+    # Call function to show error and quit
+    message_error 'No provisioner was provided.';
     ;;
   # Any argument
   * )
-    # Call function to show arguments and exit
-    echo "An invalid provisioner was provided."; argument_instructions; exit $E_BADARGS;
+    # Call function to show error and quit
+    message_error 'An invalid provisioner was provided.';
     ;;
 esac;
 
 # Validate command
 case $args_command in
+  # Cleanup untagged distro/tag command
+  'cleanup' )
+    # Distro and tag not provided
+    if [ ! -n "$args_distro" ] && [ ! -n "$args_tag" ]; then
+      # Call function to clean all tags for all distros
+      generic_clean_untagged;
+    # Invalid arguments
+    else
+      # Call function to show error and quit
+      message_error 'Invalid arguments.';
+    fi;
+    ;;
   # Clean distro/tag command
   'clean' )
     # Distro and tag provided
@@ -77,8 +128,8 @@ case $args_command in
       generic_clean_distros;
     # Invalid arguments
     else
-      # Call function to show arguments and exit
-      echo "Invalid arguments."; argument_instructions; exit $E_BADARGS;
+      # Call function to show error and quit
+      message_error 'Invalid arguments.';
     fi;
     ;;
   # Pull distro/tag command
@@ -97,8 +148,8 @@ case $args_command in
       generic_pull_distros;
     # Invalid arguments
     else
-      # Call function to show arguments and exit
-      echo "Invalid arguments."; argument_instructions; exit $E_BADARGS;
+      # Call function to show error and quit
+      message_error 'Invalid arguments.';
     fi;
     ;;
   # Build distro/tag command
@@ -117,8 +168,8 @@ case $args_command in
       generic_build_distros;
     # Invalid arguments
     else
-      # Call function to show arguments and exit
-      echo "Invalid arguments."; argument_instructions; exit $E_BADARGS;
+      # Call function to show error and quit
+      message_error 'Invalid arguments.';
     fi;
     ;;
   # Run distro/tag command
@@ -131,19 +182,19 @@ case $args_command in
     # Distro and tag not provided
     # Invalid arguments
     else
-      # Call function to show arguments and exit
-      echo "Invalid arguments."; argument_instructions; exit $E_BADARGS;
+      # Call function to show error and quit
+      message_error 'Invalid arguments.';
     fi;
     ;;
   # Empty argument
   '' )
-    # Call function to show arguments and exit
-    echo "No command was provided."; argument_instructions; exit $E_BADARGS;
+    # Call function to show error and quit
+    message_error 'No command was provided.';
     ;;
-  # Any argument
+  # Invalid arguments
   * )
-    # Call function to show arguments and exit
-    echo "An invalid command was provided."; argument_instructions; exit $E_BADARGS;
+    # Call function to show error and quit
+    message_error 'An invalid command was provided.';
     ;;
 esac;
 

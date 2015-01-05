@@ -10,9 +10,15 @@
 #==============================================================================
 
 #
-# Global parameters
+# Global flags
 #
-declare -g debug=true;
+declare -g debug=false;
+
+#
+# Global options
+#
+declare -g opts_all=false;
+declare -g opts_force=false;
 
 #
 # Global paths

@@ -10,8 +10,108 @@
 #==============================================================================
 
 #
+# Validate options
+#
+function docker_validate_options() {
+  # Check the command
+  case $args_command in
+    # Cleanup untagged distro/tag command
+    'cleanup' )
+      # Check for invalid option `all`
+      if [ ! $opts_all == false ]; then
+        # Call function to show error and quit
+        message_error 'An invalid option was provided.' 'opts_all';
+      fi;
+      # Check for valid option `force`
+      if [ ! $opts_force == true ] && [ ! $opts_force == false ]; then
+        # Call function to show error and quit
+        message_error 'An invalid option was provided.' 'opts_force';
+      fi;
+      ;;
+    # Clean distro/tag command
+    'clean' )
+      # Check for invalid option `all`
+      if [ ! $opts_all == false ]; then
+        # Call function to show error and quit
+        message_error 'An invalid option was provided.' 'opts_all';
+      fi;
+      # Check for valid option `force`
+      if [ ! $opts_force == true ] && [ ! $opts_force == false ]; then
+        # Call function to show error and quit
+        message_error 'An invalid option was provided.' 'opts_force';
+      fi;
+      ;;
+    # Pull distro/tag command
+    'pull' )
+      # Check for valid option `all`
+      if [ ! $opts_all == true ] && [ ! $opts_all == false ]; then
+        # Call function to show error and quit
+        message_error 'An invalid option was provided.' 'opts_all';
+      fi;
+      # Check for invalid option `force`
+      if [ ! $opts_force == false ]; then
+        # Call function to show error and quit
+        message_error 'An invalid option was provided.' 'opts_force';
+      fi;
+      ;;
+    # Build distro/tag command
+    'build' )
+      # Check for invalid option `all`
+      if [ ! $opts_all == false ]; then
+        # Call function to show error and quit
+        message_error 'An invalid option was provided.' 'opts_all';
+      fi;
+      # Check for valid option `force`
+      if [ ! $opts_force == true ] && [ ! $opts_force == false ]; then
+        # Call function to show error and quit
+        message_error 'An invalid option was provided.' 'opts_force';
+      fi;
+      ;;
+    # Run distro/tag command
+    'run' )
+      # Check for invalid option `all`
+      if [ ! $opts_all == false ]; then
+        # Call function to show error and quit
+        message_error 'An invalid option was provided.' 'opts_all';
+      fi;
+      # Check for invalid option `force`
+      if [ ! $opts_force == false ]; then
+        # Call function to show error and quit
+        message_error 'An invalid option was provided.' 'opts_force';
+      fi;
+      ;;
+  esac;
+}
+
+#
 # Clean distros/tags
 #
+
+# Clean all untagged tags/distros
+function docker_clean_untagged() {
+  # Debugging
+  if [ $debug = true ]; then
+    message_info 'Function:' "docker_clean_untagged";
+  fi;
+  # Call function to validate options
+  docker_validate_options;
+  # Generate command
+  local command_prefix="sudo docker rmi";
+  local command_opts="";
+  # Force if option `force` is on
+  if [ $opts_force == true ]; then
+    local command_opts="${command_opts} --force";
+  # Don't Force if option `force` is off
+  else
+    local command_opts="${command_opts}";
+  fi;
+  local command_args="\$(docker images | grep \"^<none>\" | awk \"{print \$3}\")";
+  local command="${command_prefix} ${command_opts} ${command_args}";
+  # Execute command
+  message_warn '\nSelection:' "Untagged tags/distros";
+  message_warn 'Executing:' "${command}\n";
+  eval "${command}";
+}
 
 # Clean a tag for a distro
 function docker_clean_distro_tag() {
@@ -20,8 +120,10 @@ function docker_clean_distro_tag() {
   local pass_tag=$2;
   # Debugging
   if [ $debug = true ]; then
-    echo "Function: docker_clean_distro_tag ${pass_distro} ${pass_tag}";
+    message_info 'Function:' "docker_clean_distro_tag ${pass_distro} ${pass_tag}";
   fi;
+  # Call function to validate options
+  docker_validate_options;
   # Call function to load a distro from configuration file
   generic_load_distro_config $pass_distro;
   # Call function to search for distro tag
@@ -33,15 +135,27 @@ function docker_clean_distro_tag() {
   local tag_url=${RESULT['url']};
   # Clear variables
   unset RESULT;
+  # Generate command
+  local command_prefix="sudo docker rmi";
+  local command_opts="";
+  # Force if option `force` is on
+  if [ $opts_force == true ]; then
+    local command_opts="${command_opts} --force";
+  # Don't Force if option `force` is off
+  else
+    local command_opts="${command_opts}";
+  fi;
+  local command_args="${tag_url}";
+  local command="${command_prefix} ${command_opts} ${command_args}";
   # Check if a match was returned
   if [ "$retval" -eq 1 ]; then
-    # Run `docker rmi` for a tag
-    printf "\n${bold}${tag_desc}${normal}\n";
-    echo "sudo docker rmi -f ${tag_url}";
-    sudo docker rmi -f ${tag_url};
+    # Execute command
+    message_warn '\nSelection:' "${tag_desc}";
+    message_warn 'Executing:' "${command}\n";
+    eval "${command}";
   else
-    # Show error and exit
-    echo "No match for distro/tag."; exit $E_BADARGS;
+    # Call function to show error and quit
+    message_error 'No match for distro/tag.';
   fi;
 }
 
@@ -51,7 +165,7 @@ function docker_clean_distro_tags() {
   local pass_distro=$1;
   # Debugging
   if [ $debug = true ]; then
-    echo "Function: docker_clean_distro_tags ${pass_distro}";
+    message_info 'Function:' "docker_clean_distro_tags ${pass_distro}";
   fi;
   # Call function to load a distro from configuration file
   generic_load_distro_config $pass_distro;
@@ -63,7 +177,7 @@ function docker_clean_distro_tags() {
 function docker_clean_distros() {
   # Debugging
   if [ $debug = true ]; then
-    echo "Function: docker_clean_distros";
+    message_info 'Function:' "docker_clean_distros";
   fi;
   # TODO
   exit 0;
@@ -80,8 +194,10 @@ function docker_pull_distro_tag() {
   local pass_tag=$2;
   # Debugging
   if [ $debug = true ]; then
-    echo "Function: docker_pull_distro_tag ${pass_distro} ${pass_tag}";
+    message_info 'Function:' "docker_pull_distro_tag ${pass_distro} ${pass_tag}";
   fi;
+  # Call function to validate options
+  docker_validate_options;
   # Call function to load a distro from configuration file
   generic_load_distro_config $pass_distro;
   # Call function to search for distro tag
@@ -93,15 +209,20 @@ function docker_pull_distro_tag() {
   local tag_url=${RESULT['url']};
   # Clear variables
   unset RESULT;
+  # Generate command
+  local command_prefix="sudo docker pull";
+  local command_opts="";
+  local command_args="${tag_url}";
+  local command="${command_prefix} ${command_opts} ${command_args}";
   # Check if a match was returned
   if [ "$retval" -eq 1 ]; then
-    # Run `docker pull` for tag
-    printf "\n${bold}${tag_desc}${normal}\n";
-    echo "sudo docker pull ${tag_url}";
-    sudo docker pull ${tag_url};
+    # Execute command
+    message_warn '\nSelection:' "${tag_desc}";
+    message_warn 'Executing:' "${command}\n";
+    eval "${command}";
   else
-    # Show error and exit
-    echo "No match for distro/tag."; exit $E_BADARGS;
+    # Call function to show error and quit
+    message_error 'No match for distro/tag.';
   fi;
 }
 
@@ -111,19 +232,35 @@ function docker_pull_distro_tags() {
   local pass_distro=$1;
   # Debugging
   if [ $debug = true ]; then
-    echo "Function: docker_pull_distro_tags ${pass_distro}";
+    message_info 'Function:' "docker_pull_distro_tags ${pass_distro}";
   fi;
+  # Call function to validate options
+  docker_validate_options;
   # Call function to load a distro from configuration file
   generic_load_distro_config $pass_distro;
-  # Call function to iterate on distro tags
-  generic_iterate_distro_tags $pass_distro 'docker_pull_distro_tag';
+  # Generate command
+  # Option `all` is on
+  if [ $opts_all == true ]; then
+    local command_prefix="sudo docker pull";
+    local command_opts="${command_opts} --all-tags";
+    local command_args="${distro_info['codename']}";
+    local command="${command_prefix} ${command_opts} ${command_args}";
+    # Execute command
+    message_warn '\nSelection:' "all tags for ${distro_info['codename']}";
+    message_warn 'Executing:' "${command}\n";
+    eval "${command}";
+  # Option `all` is off
+  else
+    # Call function to iterate on distro tags
+    generic_iterate_distro_tags $pass_distro 'docker_pull_distro_tag';
+  fi;
 }
 
 # Pull all tags for all distros
 function docker_pull_distros() {
   # Debugging
   if [ $debug = true ]; then
-    echo "Function: docker_pull_distros";
+    message_info 'Function:' "docker_pull_distros";
   fi;
   # TODO
   exit 0;
@@ -140,8 +277,10 @@ function docker_build_distro_tag() {
   local pass_tag=$2;
   # Debugging
   if [ $debug = true ]; then
-    echo "Function: docker_build_distro_tag ${pass_distro} ${pass_tag}";
+    message_info 'Function:' "docker_build_distro_tag ${pass_distro} ${pass_tag}";
   fi;
+  # Call function to validate options
+  docker_validate_options;
   # Call function to load a distro from configuration file
   generic_load_distro_config $pass_distro;
   # Call function to search for distro tag
@@ -154,15 +293,27 @@ function docker_build_distro_tag() {
   local tag_path="${distro_info['path']}/${tag_dir}";
   # Clear variables
   unset RESULT;
+  # Generate command
+  local command_prefix="sudo docker build";
+  local command_opts="";
+  # Option `force` is on
+  if [ $opts_force == true ]; then
+    local command_opts="${command_opts} --force-rm";
+  # Option `force` is off
+  else
+    local command_opts="${command_opts}";
+  fi;
+  local command_args="--tag=\"${tag_url}\" ${tag_path}";
+  local command="${command_prefix} ${command_opts} ${command_args}";
   # Check if a match was returned
   if [ "$retval" -eq 1 ]; then
-    # Run `docker build` for tag
-    printf "\n${bold}${tag_desc}${normal}\n";
-    echo "sudo docker build -t ${tag_url} ${tag_path}";
-    sudo docker build -t ${tag_url} ${tag_path};
+    # Execute command
+    message_warn '\nSelection:' "${tag_desc}";
+    message_warn 'Executing:' "${command}\n";
+    eval "${command}";
   else
-    # Show error and exit
-    echo "No match for distro/tag."; exit $E_BADARGS;
+    # Call function to show error and quit
+    message_error 'No match for distro/tag.';
   fi;
 }
 
@@ -172,7 +323,7 @@ function docker_build_distro_tags() {
   local pass_distro=$1;
   # Debugging
   if [ $debug = true ]; then
-    echo "Function: docker_build_distro_tags ${pass_distro}";
+    message_info 'Function:' "docker_build_distro_tags ${pass_distro}";
   fi;
   # Call function to load a distro from configuration file
   generic_load_distro_config $pass_distro;
@@ -184,7 +335,7 @@ function docker_build_distro_tags() {
 function docker_build_distros() {
   # Debugging
   if [ $debug = true ]; then
-    echo "Function: docker_build_distros";
+    message_info 'Function:' "docker_build_distros";
   fi;
   # TODO
   exit 0;
@@ -201,8 +352,10 @@ function docker_run_distro_tag() {
   local pass_tag=$2;
   # Debugging
   if [ $debug = true ]; then
-    echo "Function: docker_run_distro_tag ${pass_distro} ${pass_tag}";
+    message_info 'Function:' "docker_run_distro_tag ${pass_distro} ${pass_tag}";
   fi;
+  # Call function to validate options
+  docker_validate_options;
   # Call function to load a distro from configuration file
   generic_load_distro_config $pass_distro;
   # Call function to search for distro tag
@@ -213,15 +366,20 @@ function docker_run_distro_tag() {
   local tag_url=${RESULT['url']};
   # Clear variables
   unset RESULT;
+  # Generate command
+  local command_prefix="sudo docker run";
+  local command_opts="--interactive --tty";
+  local command_args="${tag_url}";
+  local command="${command_prefix} ${command_opts} ${command_args}";
   # Check if a match was returned
   if [ "$retval" -eq 1 ]; then
-    # Run `docker run` for tag
-    printf "\n${bold}${tag_desc}${normal}\n";
-    echo "sudo docker run -i -t ${tag_url}";
-    sudo docker run -i -t ${tag_url};
+    # Execute command
+    message_warn '\nSelection:' "${tag_desc}";
+    message_warn 'Executing:' "${command}\n";
+    eval "${command}";
   else
-    # Show error and exit
-    echo "No match for distro/tag."; exit $E_BADARGS;
+    # Call function to show error and quit
+    message_error 'No match for distro/tag.';
   fi;
 }
 
