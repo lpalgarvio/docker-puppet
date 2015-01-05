@@ -1,9 +1,9 @@
 #!/bin/bash
-#title           :docker.inc
-#description     :Docker provider functions.
+#title           :docker-puppet.inc
+#description     :Docker-Puppet provider functions.
 #author		 :lpalgarvio <"lp.algarvio@gmail.com">
-#date            :20141231
-#version         :0.5
+#date            :20150105
+#version         :0.6
 #usage		 :-
 #notes           :-
 #bash_version    :4.1.5(1)-release
@@ -16,18 +16,18 @@
 # Clean a tag for a distro
 function docker_clean_distro_tag() {
   # Get arguments
-  local arg_distro=$1;
-  local arg_tag=$2;
+  local pass_distro=$1;
+  local pass_tag=$2;
   # Debugging
   if [ $debug = true ]; then
-    echo "Function: docker_clean_distro_tag ${arg_distro} ${arg_tag}";
+    echo "Function: docker_clean_distro_tag ${pass_distro} ${pass_tag}";
   fi;
   # Call function to load a distro from configuration file
-  generic_load_distro_config 'docker-puppet' $arg_distro;
+  generic_load_distro_config $pass_distro;
   # Call function to search for distro tag
-  generic_search_distro_tag $arg_distro $arg_tag;
+  generic_search_distro_tag $pass_distro $pass_tag;
   local retval=$?;
-  # Get data
+  # Get data from tag array
   local tag_title=${RESULT['title']};
   local tag_desc=${RESULT['desc']};
   local tag_url=${RESULT['url']};
@@ -48,15 +48,15 @@ function docker_clean_distro_tag() {
 # Clean all the tags for a distro
 function docker_clean_distro_tags() {
   # Get arguments
-  local arg_distro=$1;
+  local pass_distro=$1;
   # Debugging
   if [ $debug = true ]; then
-    echo "Function: docker_clean_distro_tags ${arg_distro}";
+    echo "Function: docker_clean_distro_tags ${pass_distro}";
   fi;
   # Call function to load a distro from configuration file
-  generic_load_distro_config 'docker-puppet' $arg_distro;
+  generic_load_distro_config $pass_distro;
   # Call function to iterate on distro tags
-  generic_iterate_distro_tags $arg_distro 'docker_clean_distro_tag';
+  generic_iterate_distro_tags $pass_distro 'docker_clean_distro_tag';
 }
 
 # Clean all tags for all distros
@@ -76,18 +76,18 @@ function docker_clean_distros() {
 # Pull a tag for a distro
 function docker_pull_distro_tag() {
   # Get arguments
-  local arg_distro=$1;
-  local arg_tag=$2;
+  local pass_distro=$1;
+  local pass_tag=$2;
   # Debugging
   if [ $debug = true ]; then
-    echo "Function: docker_pull_distro_tag ${arg_distro} ${arg_tag}";
+    echo "Function: docker_pull_distro_tag ${pass_distro} ${pass_tag}";
   fi;
   # Call function to load a distro from configuration file
-  generic_load_distro_config 'docker-puppet' $arg_distro;
+  generic_load_distro_config $pass_distro;
   # Call function to search for distro tag
-  generic_search_distro_tag $arg_distro $arg_tag;
+  generic_search_distro_tag $pass_distro $pass_tag;
   local retval=$?;
-  # Get data
+  # Get data from tag array
   local tag_title=${RESULT['title']};
   local tag_desc=${RESULT['desc']};
   local tag_url=${RESULT['url']};
@@ -108,15 +108,15 @@ function docker_pull_distro_tag() {
 # Pull all the tags for a distro
 function docker_pull_distro_tags() {
   # Get arguments
-  local arg_distro=$1;
+  local pass_distro=$1;
   # Debugging
   if [ $debug = true ]; then
-    echo "Function: docker_pull_distro_tags ${arg_distro}";
+    echo "Function: docker_pull_distro_tags ${pass_distro}";
   fi;
   # Call function to load a distro from configuration file
-  generic_load_distro_config 'docker-puppet' $arg_distro;
+  generic_load_distro_config $pass_distro;
   # Call function to iterate on distro tags
-  generic_iterate_distro_tags $arg_distro 'docker_pull_distro_tag';
+  generic_iterate_distro_tags $pass_distro 'docker_pull_distro_tag';
 }
 
 # Pull all tags for all distros
@@ -136,29 +136,30 @@ function docker_pull_distros() {
 # Build a tag for a distro
 function docker_build_distro_tag() {
   # Get arguments
-  local arg_distro=$1;
-  local arg_tag=$2;
+  local pass_distro=$1;
+  local pass_tag=$2;
   # Debugging
   if [ $debug = true ]; then
-    echo "Function: docker_build_distro_tag ${arg_distro} ${arg_tag}";
+    echo "Function: docker_build_distro_tag ${pass_distro} ${pass_tag}";
   fi;
   # Call function to load a distro from configuration file
-  generic_load_distro_config 'docker-puppet' $arg_distro;
+  generic_load_distro_config $pass_distro;
   # Call function to search for distro tag
-  generic_search_distro_tag $arg_distro $arg_tag;
+  generic_search_distro_tag $pass_distro $pass_tag;
   local retval=$?;
-  # Get data
+  # Get data from tag array
   local tag_title=${RESULT['title']};
   local tag_url=${RESULT['url']};
-  local tag_path=${RESULT['path']};
+  local tag_dir=${RESULT['dir']};
+  local tag_path="${distro_info['path']}/${tag_dir}";
   # Clear variables
   unset RESULT;
   # Check if a match was returned
   if [ "$retval" -eq 1 ]; then
     # Run `docker build` for tag
     printf "\n${bold}${tag_desc}${normal}\n";
-    echo "sudo docker build -t ${tag_url} ${docker_puppet_path}/${arg_distro}/${tag_path}";
-    sudo docker build -t ${tag_url} ${docker_puppet_path}/${arg_distro}/${tag_path};
+    echo "sudo docker build -t ${tag_url} ${tag_path}";
+    sudo docker build -t ${tag_url} ${tag_path};
   else
     # Show error and exit
     echo "No match for distro/tag."; exit $E_BADARGS;
@@ -168,15 +169,15 @@ function docker_build_distro_tag() {
 # Build all the tags for a distro
 function docker_build_distro_tags() {
   # Get arguments
-  local arg_distro=$1;
+  local pass_distro=$1;
   # Debugging
   if [ $debug = true ]; then
-    echo "Function: docker_build_distro_tags ${arg_distro}";
+    echo "Function: docker_build_distro_tags ${pass_distro}";
   fi;
   # Call function to load a distro from configuration file
-  generic_load_distro_config 'docker-puppet' $arg_distro;
+  generic_load_distro_config $pass_distro;
   # Call function to iterate on distro tags
-  generic_iterate_distro_tags $arg_distro 'docker_build_distro_tag';
+  generic_iterate_distro_tags $pass_distro 'docker_build_distro_tag';
 }
 
 # Build all tags for all distros
@@ -196,18 +197,18 @@ function docker_build_distros() {
 # Run a tag from a distro
 function docker_run_distro_tag() {
   # Get arguments
-  local arg_distro=$1;
-  local arg_tag=$2;
+  local pass_distro=$1;
+  local pass_tag=$2;
   # Debugging
   if [ $debug = true ]; then
-    echo "Function: docker_run_distro_tag ${arg_distro} ${arg_tag}";
+    echo "Function: docker_run_distro_tag ${pass_distro} ${pass_tag}";
   fi;
   # Call function to load a distro from configuration file
-  generic_load_distro_config 'docker-puppet' $arg_distro;
+  generic_load_distro_config $pass_distro;
   # Call function to search for distro tag
-  generic_search_distro_tag $arg_distro $arg_tag;
+  generic_search_distro_tag $pass_distro $pass_tag;
   local retval=$?;
-  # Get data
+  # Get data from tag array
   local tag_title=${RESULT['title']};
   local tag_url=${RESULT['url']};
   # Clear variables

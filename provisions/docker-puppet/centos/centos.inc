@@ -2,8 +2,8 @@
 #title		:centos.inc
 #description	:Configuration for Docker/Puppet/CentOS/* images
 #author		:lpalgarvio <'lp.algarvio@gmail.com'>
-#date		:20141231
-#version	:0.5
+#date		:20150105
+#version	:0.6
 #usage		:-
 #notes		:-
 #bash_version	:4.2
@@ -20,7 +20,7 @@ distro_info['family']='redhat';
 distro_info['codename']='centos';
 distro_info['title']='CentOS';
 distro_info['desc']='Docker/Puppet/CentOS';
-distro_info['path']='centos';
+distro_info['dir']='centos';
 distro_info['tags']='05,06,07';
 
 #
@@ -35,7 +35,7 @@ distro_tag_05['codename']='centos5';
 distro_tag_05['title']='CentOS 5 (centos5)';
 distro_tag_05['desc']='Docker/Puppet/CentOS/5 (centos5)';
 distro_tag_05['url']='solict/provisionous-puppet-centos:centos5';
-distro_tag_05['path']='05_centos5';
+distro_tag_05['dir']='05_centos5';
 
 # CentOS 6 (centos6)
 declare -gA distro_tag_06;
@@ -45,7 +45,7 @@ distro_tag_06['codename']='centos6';
 distro_tag_06['title']='CentOS 6 (centos6)';
 distro_tag_06['desc']='Docker/Puppet/CentOS/6 (centos6)';
 distro_tag_06['url']='solict/provisionous-puppet-centos:centos6';
-distro_tag_06['path']='06_centos6';
+distro_tag_06['dir']='06_centos6';
 
 # CentOS 7 (centos7)
 declare -gA distro_tag_07;
@@ -55,5 +55,5 @@ distro_tag_07['codename']='centos7';
 distro_tag_07['title']='CentOS 7 (centos7)';
 distro_tag_07['desc']='Docker/Puppet/CentOS/7 (centos7)';
 distro_tag_07['url']='solict/provisionous-puppet-centos:centos7';
-distro_tag_07['path']='07_centos7';
+distro_tag_07['dir']='07_centos7';
 
