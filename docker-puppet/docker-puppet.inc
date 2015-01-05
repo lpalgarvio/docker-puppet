@@ -159,3 +159,38 @@ function docker_build_distro_tags() {
   generic_iterate_distro_tags $arg_distro 'docker_build_distro_tag';
 }
 
+#
+# Run distros/tags
+#
+
+# Run a tag from a given distribution
+function docker_run_distro_tag() {
+  # Get arguments
+  local arg_distro=$1;
+  local arg_tag=$2;
+  # Debugging
+  if [ $debug = true ]; then
+    echo "Function: docker_run_distro_tag ${arg_distro} ${arg_tag}";
+  fi;
+  # Call function to load a distro from configuration file
+  generic_load_distro_config 'docker-puppet' $arg_distro;
+  # Call function to search for distro tag
+  generic_search_distro_tag $arg_distro $arg_tag;
+  local retval=$?;
+  # Get data
+  local tag_title=${RESULT['title']};
+  local tag_url=${RESULT['url']};
+  # Clear variables
+  unset RESULT;
+  # Check if a match was returned
+  if [ "$retval" -eq 1 ]; then
+    # Run `docker run` for tag
+    printf "\n${bold}${tag_desc}${normal}\n";
+    echo "sudo docker run -i -t ${tag_url}";
+    sudo docker run -i -t ${tag_url};
+  else
+    # Show error and exit
+    echo "No match for distro/tag."; exit $E_BADARGS;
+  fi;
+}
+

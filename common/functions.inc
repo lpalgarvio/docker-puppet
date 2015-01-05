@@ -15,7 +15,7 @@
 
 # Show argument instructions
 function argument_instructions() {
-  echo "Usage: `basename $0` {provider} {provisioner} {command} [distribution] [release]";
+  echo "Usage: `basename $0` {provisioner} {command} [distribution] [release]";
   echo "Where the following arguments are required:";
   echo "Providers: docker";
   echo "Provisioners: puppet";
@@ -270,6 +270,26 @@ function generic_build_distros() {
   if [ "$arg_provisioner" == 'docker-puppet' ]; then
     # Call equivalent function
     docker_build_distros;
+  fi;
+}
+
+#
+# Run distros/tags
+#
+
+# Generic: Run a tag from a distro
+function generic_run_distro_tag() {
+  # Get arguments
+  local arg_distro=$1;
+  local arg_tag=$2;
+  # Debugging
+  if [ $debug = true ]; then
+    echo "Function: generic_run_distro_tag ${arg_distro} ${arg_tag}";
+  fi;
+  # Docker provider
+  if [ "$arg_provisioner" == 'docker-puppet' ]; then
+    # Call equivalent function
+    docker_run_distro_tag $arg_distro $arg_tag;
   fi;
 }
 

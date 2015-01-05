@@ -123,6 +123,20 @@ case $arg_command in
       echo "Invalid arguments."; argument_instructions; exit $E_BADARGS;
     fi;
     ;;
+  # Run distro/tag command
+  'run' )
+    # Distro and tag provided
+    if [ -n "$arg_distro" ] && [ -n "$arg_tag" ]; then
+      # Call function to run a tag from a distro
+      generic_run_distro_tag $arg_distro $arg_tag;
+    # Distro provided, tag not provided
+    # Distro and tag not provided
+    # Invalid arguments
+    else
+      # Call function to show arguments and exit
+      echo "Invalid arguments."; argument_instructions; exit $E_BADARGS;
+    fi;
+    ;;
   # Empty argument
   '' )
     # Call function to show arguments and exit
