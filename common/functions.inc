@@ -19,7 +19,7 @@ function argument_instructions() {
   echo "Where the following arguments are required:";
   echo "Providers: docker";
   echo "Provisioners: puppet";
-  echo "Commands: clean, pull, build";
+  echo "Commands: clean, pull, build, run";
   echo "These arguments are optional:";
   echo "Distributions: debian, ubuntu, centos, fedora, etc";
   echo "Releases: squeeze, wheezy, jessie, lucid, precise, trusty, etc";
@@ -42,7 +42,7 @@ function generic_search_distro_tag {
   # Get the tags for the distro
   local IFS=',';
   local distro_tags=(${distro_info['tags']});
-  # Cycle through distribution tags
+  # Cycle through distro tags
   for ((index=0; index<${#distro_tags[@]}; ++index));
   do
     # Get the current tag variable name
@@ -88,7 +88,7 @@ function generic_iterate_distro_tags {
   # Get the tags for the distro
   local IFS=',';
   local distro_tags=(${distro_info['tags']});
-  # Cycle through distribution tags
+  # Cycle through distro tags
   for ((index=0; index<${#distro_tags[@]}; ++index));
   do
     # Get the current tag variable name

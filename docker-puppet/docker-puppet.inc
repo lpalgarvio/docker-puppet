@@ -13,7 +13,7 @@
 # Clean distros/tags
 #
 
-# Clean a tag for a given distribution
+# Clean a tag for a distro
 function docker_clean_distro_tag() {
   # Get arguments
   local arg_distro=$1;
@@ -45,7 +45,7 @@ function docker_clean_distro_tag() {
   fi;
 }
 
-# Clean all the tags for a given distribution
+# Clean all the tags for a distro
 function docker_clean_distro_tags() {
   # Get arguments
   local arg_distro=$1;
@@ -73,7 +73,7 @@ function docker_clean_distros() {
 # Pull distros/tags
 #
 
-# Pull a tag for a given distribution
+# Pull a tag for a distro
 function docker_pull_distro_tag() {
   # Get arguments
   local arg_distro=$1;
@@ -105,7 +105,7 @@ function docker_pull_distro_tag() {
   fi;
 }
 
-# Pull all the tags for a given distribution
+# Pull all the tags for a distro
 function docker_pull_distro_tags() {
   # Get arguments
   local arg_distro=$1;
@@ -133,7 +133,7 @@ function docker_pull_distros() {
 # Build distros/tags
 #
 
-# Build a tag for a given distribution
+# Build a tag for a distro
 function docker_build_distro_tag() {
   # Get arguments
   local arg_distro=$1;
@@ -165,7 +165,7 @@ function docker_build_distro_tag() {
   fi;
 }
 
-# Build all the tags for a given distribution
+# Build all the tags for a distro
 function docker_build_distro_tags() {
   # Get arguments
   local arg_distro=$1;
@@ -193,7 +193,7 @@ function docker_build_distros() {
 # Run distros/tags
 #
 
-# Run a tag from a given distribution
+# Run a tag from a distro
 function docker_run_distro_tag() {
   # Get arguments
   local arg_distro=$1;
