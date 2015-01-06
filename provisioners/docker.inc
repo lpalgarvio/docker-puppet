@@ -95,17 +95,17 @@ function docker_clean_untagged() {
   fi;
   # Call function to validate options
   docker_validate_options;
-  # Generate command
+  # Start building command
   local command_prefix="sudo docker rmi";
+  # No opts
   local command_opts="";
-  # Force if option `force` is on
+  # Add forced removal mode to opts if enabled
   if [ "$opts_force" = true ]; then
     local command_opts="${command_opts} --force";
-  # Don't Force if option `force` is off
-  else
-    local command_opts="${command_opts}";
   fi;
+  # Add external command to args
   local command_args="\$(docker images | grep \"^<none>\" | awk \"{print \$3}\")";
+  # Generate command
   local command="${command_prefix} ${command_opts} ${command_args}";
   # Execute command
   message_warn '\nSelection:' "Untagged tags/distros";
@@ -135,17 +135,17 @@ function docker_clean_distro_tag() {
   local tag_url=${RESULT['url']};
   # Clear variables
   unset RESULT;
-  # Generate command
+  # Start building command
   local command_prefix="sudo docker rmi";
+  # No opts
   local command_opts="";
-  # Force if option `force` is on
+  # Add forced removal mode to opts if enabled
   if [ "$opts_force" = true ]; then
     local command_opts="${command_opts} --force";
-  # Don't Force if option `force` is off
-  else
-    local command_opts="${command_opts}";
   fi;
+  # Add tag url to args
   local command_args="${tag_url}";
+  # Generate command
   local command="${command_prefix} ${command_opts} ${command_args}";
   # Check if a match was returned
   if [ "$retval" -eq 1 ]; then
@@ -209,10 +209,13 @@ function docker_pull_distro_tag() {
   local tag_url=${RESULT['url']};
   # Clear variables
   unset RESULT;
-  # Generate command
+  # Start building command
   local command_prefix="sudo docker pull";
+  # No opts
   local command_opts="";
+  # Add tag url to args
   local command_args="${tag_url}";
+  # Generate command
   local command="${command_prefix} ${command_opts} ${command_args}";
   # Check if a match was returned
   if [ "$retval" -eq 1 ]; then
@@ -238,12 +241,15 @@ function docker_pull_distro_tags() {
   docker_validate_options;
   # Call function to load a distro from configuration file
   generic_load_distro_config $pass_distro;
-  # Generate command
-  # Option `all` is on
+  # Option `all` triggered, skip docker_pull_distro_tag()
   if [ "$opts_all" = true ]; then
+    # Start building command
     local command_prefix="sudo docker pull";
+    # Add all tags mode to opts
     local command_opts="${command_opts} --all-tags";
+    # Add distro codename to args
     local command_args="${distro_info['codename']}";
+    # Generate command
     local command="${command_prefix} ${command_opts} ${command_args}";
     # Execute command
     message_warn '\nSelection:' "all tags for ${distro_info['codename']}";
@@ -289,21 +295,29 @@ function docker_build_distro_tag() {
   # Get data from tag array
   local tag_title=${RESULT['title']};
   local tag_url=${RESULT['url']};
-  local tag_dir=${RESULT['dir']};
-  local tag_path="${distro_info['path']}/${tag_dir}";
+  local tag_provision=${RESULT['provision']};
+  local tag_provision_dir=${RESULT['provision_dir']};
+  local tag_provision_path="${distro_info['provision_path']}/${tag_provision_dir}";
   # Clear variables
   unset RESULT;
-  # Generate command
+  # Check if provision is disabled
+  if [ "$tag_provision" = false ]; then
+    # Call function to show error and quit
+    message_error 'Distro/tag not configured for provisioning.';
+  fi;
+  # Start building command
   local command_prefix="sudo docker build";
-  local command_opts="";
-  # Option `force` is on
+  # Add self-clean mode to opts
+  local command_opts="--rm=true";
+  # Add forced self-clean mode to opts if enabled
   if [ "$opts_force" = true ]; then
     local command_opts="${command_opts} --force-rm";
-  # Option `force` is off
-  else
-    local command_opts="${command_opts}";
   fi;
-  local command_args="--tag=\"${tag_url}\" ${tag_path}";
+  # Add tag to opts
+  local command_opts="${command_opts} --tag=\"${tag_url}\"";
+  # Add provision to args
+  local command_args="${tag_provision_path}";
+  # Generate command
   local command="${command_prefix} ${command_opts} ${command_args}";
   # Check if a match was returned
   if [ "$retval" -eq 1 ]; then
@@ -364,12 +378,25 @@ function docker_run_distro_tag() {
   # Get data from tag array
   local tag_title=${RESULT['title']};
   local tag_url=${RESULT['url']};
+  local tag_shell=${RESULT['shell']};
+  local tag_container=${RESULT['container']};
+  local tag_container_dir=${RESULT['container_dir']};
+  local tag_container_mnt=${RESULT['container_mnt']};
+  local tag_container_path="${distro_info['container_path']}/${tag_container_dir}";
   # Clear variables
   unset RESULT;
-  # Generate command
+  # Start building command
   local command_prefix="sudo docker run";
+  # Add interactive and tty modes to opts
   local command_opts="--interactive --tty";
-  local command_args="${tag_url}";
+  # Add volume/container to opts if enabled
+  if [ "$tag_container" = true ]; then
+    local pwd=`pwd`;
+    local command_opts="${command_opts} --volume=\"${pwd}/${tag_container_path}\":${tag_container_mnt}:rw";
+  fi;
+  # Add url and shell to args
+  local command_args="${tag_url} ${tag_shell}";
+  # Generate command
   local command="${command_prefix} ${command_opts} ${command_args}";
   # Check if a match was returned
   if [ "$retval" -eq 1 ]; then

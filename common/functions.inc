@@ -187,7 +187,12 @@ function generic_search_distro_tag {
       eval RESULT['title']="\${${current_tag}['title']}";
       eval RESULT['desc']="\${${current_tag}['desc']}";
       eval RESULT['url']="\${${current_tag}['url']}";
-      eval RESULT['dir']="\${${current_tag}['dir']}";
+      eval RESULT['shell']="\${${current_tag}['shell']}";
+      eval RESULT['provision']="\${${current_tag}['provision']}";
+      eval RESULT['provision_dir']="\${${current_tag}['provision_dir']}";
+      eval RESULT['container']="\${${current_tag}['container']}";
+      eval RESULT['container_dir']="\${${current_tag}['container_dir']}";
+      eval RESULT['container_mnt']="\${${current_tag}['container_mnt']}";
       # Debugging
       if [ "$debug" = true ]; then
         message_info 'Tag:' "${RESULT['desc']}";
@@ -242,21 +247,27 @@ function generic_load_distro_config {
   fi;
   # Docker-Base provisioner
   if [ "$args_provisioner" == 'docker-base' ]; then
-    local provision_path="${docker_base_path}/${pass_distro}";
+    # Define paths
+    local provision_path="${provision_docker_base_path}/${pass_distro}";
     local provision_inc="${provision_path}/${pass_distro}.${script_ext}";
+    local container_path="${container_docker_base_path}/${pass_distro}";
   # Docker-Puppet provisioner
   elif [ "$args_provisioner" == 'docker-puppet' ]; then
-    local provision_path="${docker_puppet_path}/${pass_distro}";
+    # Define paths
+    local provision_path="${provision_docker_puppet_path}/${pass_distro}";
     local provision_inc="${provision_path}/${pass_distro}.${script_ext}";
+    local container_path="${container_docker_puppet_path}/${pass_distro}";
   fi;
   # Import distro provision
   source "./${provision_inc}";
-  # Add data to distro array
-  distro_info['path']="${provision_path}";
-  distro_info['inc']="${provision_inc}";
+  # Add paths to distro array
+  distro_info['provision_path']="${provision_path}";
+  distro_info['provision_inc']="${provision_inc}";
+  distro_info['container_path']="${container_path}";
   # Debugging
   if [ "$debug" = true ]; then
-    message_info 'Provision:' "${distro_info['inc']}";
+    message_info 'Provision:' "${distro_info['provision_inc']}";
+    message_info 'Container' "${distro_info['container_path']}";
     message_info 'Distro:' "${distro_info['desc']}";
   fi;
 }

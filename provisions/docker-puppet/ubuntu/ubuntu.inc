@@ -35,7 +35,12 @@ distro_tag_10_04['codename']='lucid';
 distro_tag_10_04['title']='Ubuntu 10.04 (lucid)';
 distro_tag_10_04['desc']='Docker/Puppet/Ubuntu/10.04 (lucid)';
 distro_tag_10_04['url']='solict/provisionous-puppet-ubuntu:lucid';
-distro_tag_10_04['dir']='10.04_lucid';
+distro_tag_10_04['shell']='/bin/bash';
+distro_tag_10_04['provision']=true;
+distro_tag_10_04['provision_dir']='10.04_lucid';
+distro_tag_10_04['container']=true;
+distro_tag_10_04['container_dir']='10.04_lucid';
+distro_tag_10_04['container_mnt']='/srv';
 
 # Ubuntu 12.04 (precise)
 declare -gA distro_tag_12_04;
@@ -45,7 +50,12 @@ distro_tag_12_04['codename']='precise';
 distro_tag_12_04['title']='Ubuntu 12.04 (precise)';
 distro_tag_12_04['desc']='Docker/Puppet/Ubuntu/12.04 (precise)';
 distro_tag_12_04['url']='solict/provisionous-puppet-ubuntu:precise';
-distro_tag_12_04['dir']='12.04_precise';
+distro_tag_12_04['shell']='/bin/bash';
+distro_tag_12_04['provision']=true;
+distro_tag_12_04['provision_dir']='12.04_precise';
+distro_tag_12_04['container']=true;
+distro_tag_12_04['container_dir']='12.04_precise';
+distro_tag_12_04['container_mnt']='/srv';
 
 # Ubuntu 14.04 (trusty)
 declare -gA distro_tag_14_04;
@@ -55,5 +65,10 @@ distro_tag_14_04['codename']='trusty';
 distro_tag_14_04['title']='Ubuntu 14.04 (trusty)';
 distro_tag_14_04['desc']='Docker/Puppet/Ubuntu/14.04 (trusty)';
 distro_tag_14_04['url']='solict/provisionous-puppet-ubuntu:trusty';
-distro_tag_14_04['dir']='14.04_trusty';
+distro_tag_14_04['shell']='/bin/bash';
+distro_tag_14_04['provision']=true;
+distro_tag_14_04['provision_dir']='14.04_trusty';
+distro_tag_14_04['container']=true;
+distro_tag_14_04['container_dir']='14.04_trusty';
+distro_tag_14_04['container_mnt']='/srv';
 

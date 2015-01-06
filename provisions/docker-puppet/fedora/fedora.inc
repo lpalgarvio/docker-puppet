@@ -35,7 +35,12 @@ distro_tag_06['codename']='zod';
 distro_tag_06['title']='Fedora 6 (zod)';
 distro_tag_06['desc']='Docker/Puppet/Fedora/6 (zod)';
 distro_tag_06['url']='solict/provisionous-puppet-fedora:zod';
-distro_tag_06['dir']='06_zod';
+distro_tag_06['shell']='/bin/bash';
+distro_tag_06['provision']=true;
+distro_tag_06['provision_dir']='06_zod';
+distro_tag_06['container']=true;
+distro_tag_06['container_dir']='06_zod';
+distro_tag_06['container_mnt']='/srv';
 
 # Fedora 12 (constantine)
 declare -gA distro_tag_12;
@@ -45,7 +50,12 @@ distro_tag_12['codename']='constantine';
 distro_tag_12['title']='Fedora 12 (constantine)';
 distro_tag_12['desc']='Docker/Puppet/Fedora/12 (constantine)';
 distro_tag_12['url']='solict/provisionous-puppet-fedora:constantine';
-distro_tag_12['dir']='12_constantine';
+distro_tag_12['shell']='/bin/bash';
+distro_tag_12['provision']=true;
+distro_tag_12['provision_dir']='12_constantine';
+distro_tag_12['container']=true;
+distro_tag_12['container_dir']='12_constantine';
+distro_tag_12['container_mnt']='/srv';
 
 # Fedora 19 (schrodinger)
 declare -gA distro_tag_19;
@@ -55,5 +65,10 @@ distro_tag_19['codename']='schrodinger';
 distro_tag_19['title']='Fedora 19 (schrodinger)';
 distro_tag_19['desc']='Docker/Puppet/Fedora/19 (schrodinger)';
 distro_tag_19['url']='solict/provisionous-puppet-fedora:schrodinger';
-distro_tag_19['dir']='19_schrodinger';
+distro_tag_19['shell']='/bin/bash';
+distro_tag_19['provision']=true;
+distro_tag_19['provision_dir']='19_schrodinger';
+distro_tag_19['container']=true;
+distro_tag_19['container_dir']='19_schrodinger';
+distro_tag_19['container_mnt']='/srv';
 

@@ -8,5 +8,6 @@ TODO:
  * flexibility in provisioners with support for custom provisions
  * test/fix tags
  * finish distros
+ * add rhel: https://access.redhat.com/search/browse/container-images#?
  * add puppet
 

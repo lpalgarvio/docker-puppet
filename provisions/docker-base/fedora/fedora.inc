@@ -35,7 +35,12 @@ distro_tag_06['codename']='zod';
 distro_tag_06['title']='Fedora 6 (zod)';
 distro_tag_06['desc']='Docker/Base/Fedora/6 (zod)';
 distro_tag_06['url']='fedora:zod';
-distro_tag_06['dir']='';
+distro_tag_06['shell']='/bin/bash';
+distro_tag_06['provision']=false;
+distro_tag_06['provision_dir']='';
+distro_tag_06['container']=false;
+distro_tag_06['container_dir']='';
+distro_tag_06['container_mnt']='';
 
 # Fedora 12 (constantine)
 declare -gA distro_tag_12;
@@ -45,7 +50,12 @@ distro_tag_12['codename']='constantine';
 distro_tag_12['title']='Fedora 12 (constantine)';
 distro_tag_12['desc']='Docker/Base/Fedora/12 (constantine)';
 distro_tag_12['url']='fedora:constantine';
-distro_tag_12['dir']='';
+distro_tag_12['shell']='/bin/bash';
+distro_tag_12['provision']=false;
+distro_tag_12['provision_dir']='';
+distro_tag_12['container']=false;
+distro_tag_12['container_dir']='';
+distro_tag_12['container_mnt']='';
 
 # Fedora 19 (schrodinger)
 declare -gA distro_tag_19;
@@ -55,5 +65,10 @@ distro_tag_19['codename']='schrodinger';
 distro_tag_19['title']='Fedora 19 (schrodinger)';
 distro_tag_19['desc']='Docker/Base/Fedora/19 (schrodinger)';
 distro_tag_19['url']='fedora:schrodinger';
-distro_tag_19['dir']='';
+distro_tag_19['shell']='/bin/bash';
+distro_tag_19['provision']=false;
+distro_tag_19['provision_dir']='';
+distro_tag_19['container']=false;
+distro_tag_19['container_dir']='';
+distro_tag_19['container_mnt']='';
 
