@@ -46,7 +46,7 @@ function message_error() {
   # Show the error with formatting
   echo -e "${txt_error}${pass_arg1} ${txt_normal}${pass_arg2}";
   # Show usage instructions
-  argument_instructions;
+  menu_usage;
   # Quit with error
   exit $E_BADARGS;
 }
@@ -78,18 +78,58 @@ function message_success() {
   echo -e "${txt_success}${pass_arg1} ${txt_normal}${pass_arg2}";
 }
 
-# Show argument instructions
-function argument_instructions() {
-  echo -e "${txt_special1}Usage: ${txt_normal}`basename $0` {provisioner} {command} [distribution] [release]";
-  echo -e "${txt_special2}Where the following arguments are required:${txt_normal}";
-  echo -e "${txt_special1}Provisioners: ${txt_normal}docker-base, docker-puppet";
-  echo -e "${txt_special1}Commands: ${txt_normal}clean, pull, build, run";
-  echo -e "${txt_special2}These arguments are optional:${txt_normal}";
-  echo -e "${txt_special1}Options: ${txt_normal}-a|--all: all tags, -f|--force: force operation and overwrite files";
-  echo -e "${txt_special1}Distributions: ${txt_normal}debian, ubuntu, centos, fedora, etc";
-  echo -e "${txt_special1}Releases: ${txt_normal}squeeze, wheezy, jessie, lucid, precise, trusty, etc";
+# Show quick usage message
+function menu_usage() {
+  echo -e "${txt_special1}Usage: ${txt_normal}`basename $0` [options] {provisioner} {command} [distribution] [tag]";
+}
+
+# Show long help message
+function menu_help() {
+  echo -e "${txt_special1}Usage: ${txt_normal}`basename $0` [options] {provisioner} {command} [distribution] [tag]";
+  echo -e "${txt_normal}";
+  echo -e "${txt_special1}Options: ${txt_normal}";
+  echo -e "${txt_normal}  -u, --usage                 show the quick usage message";
+  echo -e "${txt_normal}  -h, --help                  show this long help message";
+  echo -e "${txt_normal}  -a, --all[=boolean]         all tags";
+  echo -e "${txt_normal}  -f, --force[=boolean]       force operation and overwrite files";
+  echo -e "${txt_normal}";
+  echo -e "${txt_special1}Provisioners (*): ${txt_normal}";
+  echo -e "${txt_normal}  docker-base                 docker + base distro/tag images";
+  echo -e "${txt_normal}  docker-puppet               docker + puppet distro/tag images";
+  echo -e "${txt_normal}";
+  echo -e "${txt_special1}Commands (*): ${txt_normal}";
+  echo -e "${txt_normal}  cleanup                     remove untagged distro/tag images from local environment";
+  echo -e "${txt_normal}  clean {dist} [tag]          remove distro/tag images from local environment";
+  echo -e "${txt_normal}  pull {dist} [tag]           retrieve distro/tag images from remote server";
+  echo -e "${txt_normal}  build {dist} [tag]          build distro/tag images on local environment";
+  echo -e "${txt_normal}  run {dist} {tag}            run distro/tag images on local environment";
+  echo -e "${txt_normal}";
+  echo -e "${txt_special1}Distributions and tags: ${txt_normal}";
+  echo -e "${txt_normal}╔═════════╦═══════════════╦═══════════╗";
+  echo -e "${txt_normal}║ distro  ║  t.codename   ║ t.version ║";
+  echo -e "${txt_normal}║═════════╬═══════════════╬═══════════╣";
+  echo -e "${txt_normal}║         ║  squeeze      ║     6     ║";
+  echo -e "${txt_normal}║ debian  ║  wheezy       ║     7     ║";
+  echo -e "${txt_normal}║         ║  jessie       ║     8     ║";
+  echo -e "${txt_normal}╠═════════╬═══════════════╬═══════════╣";
+  echo -e "${txt_normal}║         ║  lucid        ║   10.04   ║";
+  echo -e "${txt_normal}║ ubuntu  ║  precise      ║   12.04   ║";
+  echo -e "${txt_normal}║         ║  trusty       ║   14.04   ║";
+  echo -e "${txt_normal}╠═════════╬═══════════════╬═══════════╣";
+  echo -e "${txt_normal}║         ║  centos5      ║     5     ║";
+  echo -e "${txt_normal}║ centos  ║  centos6      ║     6     ║";
+  echo -e "${txt_normal}║         ║  centos7      ║     7     ║";
+  echo -e "${txt_normal}╠═════════╬═══════════════╬═══════════╣";
+  echo -e "${txt_normal}║         ║  zod          ║     6     ║";
+  echo -e "${txt_normal}║ fedora  ║  constantine  ║    12     ║";
+  echo -e "${txt_normal}║         ║  schrodinger  ║    19     ║";
+  echo -e "${txt_normal}╚═════════╩═══════════════╩═══════════╝";
+  echo -e "${txt_normal}";
+  echo -e "${txt_normal}(*) Required arguments.${txt_normal}";
+  echo -e "${txt_normal}";
   echo -e "${txt_special2}Example #1: ${txt_normal}`basename $0` --all docker-base pull debian";
   echo -e "${txt_special2}Example #2: ${txt_normal}`basename $0` docker-puppet pull debian wheezy";
+  echo -e "${txt_special2}Example #3: ${txt_normal}`basename $0` --force docker-puppet clean debian";
 }
 
 #

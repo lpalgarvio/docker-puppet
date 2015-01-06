@@ -1,0 +1,12 @@
+TODO:
+ * readme
+ * check distro/tag status
+ * search by codename and version
+ * search, list, delete images
+  - sudo docker images | grep "^centos" | awk "{print $3}"
+  - sudo docker rmi --force $(docker images | grep "^debian" | awk "{print $3}")
+ * flexibility in provisioners with support for custom provisions
+ * test/fix tags
+ * finish distros
+ * add puppet
+

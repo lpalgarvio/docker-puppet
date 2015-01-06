@@ -24,7 +24,7 @@ init_formatting;
 
 # Get the options
 declare -g opts='';
-opts=`getopt --options "af" --longoptions "all,force" -- "$@"`;
+opts=`getopt --options "uhaf" --longoptions "usage,help,all:,force:" -- "$@"`;
 
 # Validate the options
 if [ $? != 0 ]; then
@@ -36,22 +36,59 @@ fi;
 eval set -- "$opts";
 while true ; do
   case "$1" in
+    # Option `usage`
+    -u|--usage )
+      menu_usage;
+      exit 1;
+      ;;
+    # Option `help`
+    -h|--help )
+      menu_help;
+      exit 1;
+      ;;
     # Option `all`
     -a|--all )
-      # Enable option
-      opts_all=true;
-      options+=$1;
-      shift;
+      # True
+      if [ "$2" == '' ] || [ "$2" == true ]; then
+        # Enable option
+        opts_all=true;
+        options+=$1;
+      # False
+      elif [ "$2" == false ]; then
+        # Disable option
+        opts_all=false;
+        options+=$1;
+      # Invalid
+      else
+        # Call function to show error and quit
+        message_error 'An invalid option was provided.';
+      fi;
+      # Shift positions
+      shift 2;
       ;;
     # Option `force`
     -f|--force )
-      # Enable option
-      opts_force=true;
-      options+=$1;
-      shift;
+      # True
+      if [ "$2" == '' ] || [ "$2" == true ]; then
+        # Enable option
+        opts_force=true;
+        options+=$1;
+      # False
+      elif [ "$2" == false ]; then
+        # Disable option
+        opts_force=false;
+        options+=$1;
+      # Invalid
+      else
+        # Call function to show error and quit
+        message_error 'An invalid option was provided.';
+      fi;
+      # Shift positions
+      shift 2;
       ;;
     # Don't stall
     --)
+      # Shift positions
       shift;
       break;;
   esac;
@@ -71,7 +108,7 @@ if [ $debug = true ]; then
 fi;
 
 #
-# Decision-makers
+# Logic
 #
 
 # Validate provisioner
