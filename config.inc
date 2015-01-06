@@ -15,25 +15,24 @@
 declare -g debug=false;
 
 #
-# Global options
+# Default options
 #
 declare -g opts_all=false;
 declare -g opts_force=false;
 
 #
-# Global paths
+# System paths
 #
 declare -g script_ext='inc';
-declare -g common_path='common';
-declare -g provisioners_path='provisioners';
+declare -g includes_path='includes';
 declare -g provisions_path='provisions';
 declare -g containers_path='containers';
 
 #
-# Paths for includes
+# Includes
 #
-declare -g functions_inc="${common_path}/functions.${script_ext}";
-declare -g docker_inc="${provisioners_path}/docker.${script_ext}";
+declare -g functions_inc="${includes_path}/functions.${script_ext}";
+declare -g docker_inc="${includes_path}/docker.${script_ext}";
 
 #
 # Paths for Docker/Base

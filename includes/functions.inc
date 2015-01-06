@@ -1,6 +1,6 @@
 #!/bin/bash
 #title           :functions.inc
-#description     :Describes common functions for the main script.
+#description     :Describes common functions.
 #author		 :lpalgarvio <"lp.algarvio@gmail.com">
 #date            :20150105
 #version         :0.6
