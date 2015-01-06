@@ -78,6 +78,23 @@ function message_success() {
   echo -e "${txt_success}${pass_arg1} ${txt_normal}${pass_arg2}";
 }
 
+# Show question yes/no
+function question_yn() {
+  # Get the arguments
+  local pass_question=${1};
+  # Show question with prompt
+  local RESULT;
+  while true; do
+    read -p "${txt_warn}$pass_question${txt_warn} [${bold}y${normal}/n] " yn;
+    case $yn in
+      [Yy]* ) $RESULT=true; break;;
+      [Nn]* ) $RESULT=false; break;;
+      * ) $RESULT=true; break;;
+    esac
+  done
+  return $RESULT;
+}
+
 # Show quick usage message
 function menu_usage() {
   echo -e "${txt_special1}Usage: ${txt_normal}`basename $0` [options] {provisioner} {command} [distribution] [tag]";
@@ -90,8 +107,8 @@ function menu_help() {
   echo -e "${txt_special1}Options: ${txt_normal}";
   echo -e "${txt_normal}  -u, --usage                 show the quick usage message";
   echo -e "${txt_normal}  -h, --help                  show this long help message";
-  echo -e "${txt_normal}  -a, --all[=boolean]         all tags";
-  echo -e "${txt_normal}  -f, --force[=boolean]       force operation and overwrite files";
+  echo -e "${txt_normal}  -a, --all=boolean           select all tags for operation";
+  echo -e "${txt_normal}  -f, --force=boolean         force operation and overwrite files";
   echo -e "${txt_normal}";
   echo -e "${txt_special1}Provisioners (*): ${txt_normal}";
   echo -e "${txt_normal}  docker-base                 docker + base distro/tag images";
@@ -127,9 +144,9 @@ function menu_help() {
   echo -e "${txt_normal}";
   echo -e "${txt_normal}(*) Required arguments.${txt_normal}";
   echo -e "${txt_normal}";
-  echo -e "${txt_special2}Example #1: ${txt_normal}`basename $0` --all docker-base pull debian";
+  echo -e "${txt_special2}Example #1: ${txt_normal}`basename $0` --all=true docker-base pull debian";
   echo -e "${txt_special2}Example #2: ${txt_normal}`basename $0` docker-puppet pull debian wheezy";
-  echo -e "${txt_special2}Example #3: ${txt_normal}`basename $0` --force docker-puppet clean debian";
+  echo -e "${txt_special2}Example #3: ${txt_normal}`basename $0` --force=true docker-puppet clean debian";
 }
 
 #
@@ -142,7 +159,7 @@ function generic_search_distro_tag {
   local pass_distro=${1};
   local pass_tag=${2};
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "generic_search_distro_tag ${pass_distro} ${pass_tag}";
   fi;
   # Get the tags for the distro
@@ -154,13 +171,14 @@ function generic_search_distro_tag {
     # Get the current tag variable name
     local current_tag='distro_tag_'${distro_tags[$index]};
     # Debugging
-    if [ $debug = true ]; then
+    if [ "$debug" = true ]; then
       eval "message_info '(Search) Tag:' \"\${${current_tag}['desc']}\"";
     fi;
-    # Get the current tag codename
+    # Get the current tag version and codename
+    eval local current_version="\${${current_tag}['version']}";
     eval local current_codename="\${${current_tag}['codename']}";
     # Compare the current tag with the search tag
-    if [ "$current_codename" == "$pass_tag" ]; then
+    if [ "$current_version" == "$pass_tag" ] || [ "$current_codename" == "$pass_tag" ]; then
       # Get the current tag information
       declare -gA RESULT;
       eval RESULT['status']="\${${current_tag}['status']}";
@@ -171,7 +189,7 @@ function generic_search_distro_tag {
       eval RESULT['url']="\${${current_tag}['url']}";
       eval RESULT['dir']="\${${current_tag}['dir']}";
       # Debugging
-      if [ $debug = true ]; then
+      if [ "$debug" = true ]; then
         message_info 'Tag:' "${RESULT['desc']}";
       fi;
       # Return success
@@ -188,7 +206,7 @@ function generic_iterate_distro_tags {
   local pass_distro=${1};
   local call_function=${2};
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "generic_iterate_distro_tags ${pass_distro} ${call_function}";
   fi;
   # Get the tags for the distro
@@ -200,7 +218,7 @@ function generic_iterate_distro_tags {
     # Get the current tag variable name
     local current_tag='distro_tag_'${distro_tags[$index]};
     # Debugging
-    if [ $debug = true ]; then
+    if [ "$debug" = true ]; then
       eval "message_info '(Iterate) Tag:' \"\${${current_tag}['codename']}\"";
     fi;
     # Get the current tag codename
@@ -219,7 +237,7 @@ function generic_load_distro_config {
   # Get arguments
   local pass_distro=$1;
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "generic_load_distro_config ${pass_distro}";
   fi;
   # Docker-Base provisioner
@@ -237,7 +255,7 @@ function generic_load_distro_config {
   distro_info['path']="${provision_path}";
   distro_info['inc']="${provision_inc}";
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Provision:' "${distro_info['inc']}";
     message_info 'Distro:' "${distro_info['desc']}";
   fi;
@@ -250,7 +268,7 @@ function generic_load_distro_config {
 # Generic: Clean all untagged tags/distros
 function generic_clean_untagged() {
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "generic_clean_untagged";
   fi;
   # Docker-Base provisioner
@@ -270,7 +288,7 @@ function generic_clean_distro_tag() {
   local pass_distro=$1;
   local pass_tag=$2;
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "generic_clean_distro_tag ${pass_distro} ${pass_tag}";
   fi;
   # Docker-Base provisioner
@@ -289,7 +307,7 @@ function generic_clean_distro_tags() {
   # Get arguments
   local pass_distro=$1;
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "generic_clean_distro_tags ${pass_distro}";
   fi;
   # Docker-Base provisioner
@@ -306,7 +324,7 @@ function generic_clean_distro_tags() {
 # Generic: Clean all tags for all distros
 function generic_clean_distros() {
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "generic_clean_distros";
   fi;
   # Docker-Base provisioner
@@ -330,7 +348,7 @@ function generic_pull_distro_tag() {
   local pass_distro=$1;
   local pass_tag=$2;
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "generic_pull_distro_tag ${pass_distro} ${pass_tag}";
   fi;
   # Docker-Base provisioner
@@ -349,7 +367,7 @@ function generic_pull_distro_tags() {
   # Get arguments
   local pass_distro=$1;
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "generic_pull_distro_tags ${pass_distro}";
   fi;
   # Docker-Base provisioner
@@ -366,7 +384,7 @@ function generic_pull_distro_tags() {
 # Generic: Pull all tags for all distros
 function generic_pull_distros() {
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "generic_pull_distros";
   fi;
   # Docker-Base provisioner
@@ -390,7 +408,7 @@ function generic_build_distro_tag() {
   local pass_distro=$1;
   local pass_tag=$2;
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "generic_build_distro_tag ${pass_distro} ${pass_tag}";
   fi;
   # Docker-Base provisioner
@@ -409,7 +427,7 @@ function generic_build_distro_tags() {
   # Get arguments
   local pass_distro=$1;
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "generic_build_distro_tags ${pass_distro}";
   fi;
   # Docker-Base provisioner
@@ -426,7 +444,7 @@ function generic_build_distro_tags() {
 # Generic: Build all tags for all distros
 function generic_build_distros() {
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "generic_build_distros";
   fi;
   # Docker-Base provisioner
@@ -450,7 +468,7 @@ function generic_run_distro_tag() {
   local pass_distro=$1;
   local pass_tag=$2;
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "generic_run_distro_tag ${pass_distro} ${pass_tag}";
   fi;
   # Docker-Base provisioner

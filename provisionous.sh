@@ -4,7 +4,8 @@
 #author		 :lpalgarvio <"lp.algarvio@gmail.com">
 #date            :20150105
 #version         :0.6
-#usage		 :bash provisionous.sh [arg1] [arg2] [arg3] [arg4]
+#usage		 :bash provisionous.sh [options] {provisioner} {command} \
+#                  [distribution] [tag]
 #notes		 :Run scripts in install directory to install the dependencies.
 #bash_version    :4.2
 #==============================================================================
@@ -24,12 +25,12 @@ init_formatting;
 
 # Get the options
 declare -g opts='';
-opts=`getopt --options "uhaf" --longoptions "usage,help,all:,force:" -- "$@"`;
+opts=`getopt --options "u,h,a,f" --longoptions "usage,help,all:,force:" -- "$@"`;
 
 # Validate the options
 if [ $? != 0 ]; then
   # Call function to show error and quit
-  message_error 'An invalid option was provided.';
+  message_error 'An invalid option was provided:' "${1} ${2}";
 fi;
 
 # Store the options
@@ -49,42 +50,60 @@ while true ; do
     # Option `all`
     -a|--all )
       # True
-      if [ "$2" == '' ] || [ "$2" == true ]; then
+      if [ "$2" == '--' ]; then
         # Enable option
         opts_all=true;
         options+=$1;
+        # Shift positions
+        shift 1;
+      # True
+      elif [ "$2" = true ]; then
+        # Enable option
+        opts_all=true;
+        options+=$1;
+        # Shift positions
+        shift 2;
       # False
-      elif [ "$2" == false ]; then
+      elif [ "$2" = false ]; then
         # Disable option
         opts_all=false;
         options+=$1;
+        # Shift positions
+        shift 2;
       # Invalid
       else
         # Call function to show error and quit
-        message_error 'An invalid option was provided.';
+        message_error 'An invalid option was provided:' "${1} ${2}";
       fi;
-      # Shift positions
-      shift 2;
       ;;
     # Option `force`
     -f|--force )
       # True
-      if [ "$2" == '' ] || [ "$2" == true ]; then
+      if [ "$2" == '--' ]; then
         # Enable option
         opts_force=true;
         options+=$1;
+        # Shift positions
+        shift 1;
+      # True
+      elif [ "$2" = true ]; then
+        # Enable option
+        opts_force=true;
+        options+=$1;
+        # Shift positions
+        shift 2;
       # False
-      elif [ "$2" == false ]; then
+      elif [ "$2" = false ]; then
         # Disable option
         opts_force=false;
         options+=$1;
+        # Shift positions
+        shift 2;
       # Invalid
       else
         # Call function to show error and quit
-        message_error 'An invalid option was provided.';
+        message_error 'An invalid option was provided:' "${1} ${2}";
       fi;
-      # Shift positions
-      shift 2;
       ;;
     # Don't stall
     --)
@@ -95,16 +114,16 @@ while true ; do
 done;
 
 # Store the arguments
-declare -g args="$*";
+declare -g arguments="$*";
 declare -g args_provisioner=$1;
 declare -g args_command=$2;
 declare -g args_distro=$3;
 declare -g args_tag=$4;
 
 # Debugging
-if [ $debug = true ]; then
+if [ "$debug" = true ]; then
   message_info 'Options:' ${options};
-  message_info 'Arguments:' ${args};
+  message_info 'Arguments:' ${arguments};
 fi;
 
 #

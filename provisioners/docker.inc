@@ -18,66 +18,66 @@ function docker_validate_options() {
     # Cleanup untagged distro/tag command
     'cleanup' )
       # Check for invalid option `all`
-      if [ ! $opts_all == false ]; then
+      if [ ! "$opts_all" = false ]; then
         # Call function to show error and quit
-        message_error 'An invalid option was provided.' 'opts_all';
+        message_error 'An invalid option was provided:' '--all';
       fi;
       # Check for valid option `force`
-      if [ ! $opts_force == true ] && [ ! $opts_force == false ]; then
+      if [ ! "$opts_force" = true ] && [ ! "$opts_force" = false ]; then
         # Call function to show error and quit
-        message_error 'An invalid option was provided.' 'opts_force';
+        message_error 'An invalid option was provided:' '--force';
       fi;
       ;;
     # Clean distro/tag command
     'clean' )
       # Check for invalid option `all`
-      if [ ! $opts_all == false ]; then
+      if [ ! "$opts_all" = false ]; then
         # Call function to show error and quit
-        message_error 'An invalid option was provided.' 'opts_all';
+        message_error 'An invalid option was provided:' '--all';
       fi;
       # Check for valid option `force`
-      if [ ! $opts_force == true ] && [ ! $opts_force == false ]; then
+      if [ ! "$opts_force" = true ] && [ ! "$opts_force" = false ]; then
         # Call function to show error and quit
-        message_error 'An invalid option was provided.' 'opts_force';
+        message_error 'An invalid option was provided:' '--force';
       fi;
       ;;
     # Pull distro/tag command
     'pull' )
       # Check for valid option `all`
-      if [ ! $opts_all == true ] && [ ! $opts_all == false ]; then
+      if [ ! "$opts_all" = true ] && [ ! "$opts_all" = false ]; then
         # Call function to show error and quit
-        message_error 'An invalid option was provided.' 'opts_all';
+        message_error 'An invalid option was provided:' '--all';
       fi;
       # Check for invalid option `force`
-      if [ ! $opts_force == false ]; then
+      if [ ! "$opts_force" = false ]; then
         # Call function to show error and quit
-        message_error 'An invalid option was provided.' 'opts_force';
+        message_error 'An invalid option was provided:' '--force';
       fi;
       ;;
     # Build distro/tag command
     'build' )
       # Check for invalid option `all`
-      if [ ! $opts_all == false ]; then
+      if [ ! "$opts_all" = false ]; then
         # Call function to show error and quit
-        message_error 'An invalid option was provided.' 'opts_all';
+        message_error 'An invalid option was provided:' '--all';
       fi;
       # Check for valid option `force`
-      if [ ! $opts_force == true ] && [ ! $opts_force == false ]; then
+      if [ ! "$opts_force" = true ] && [ ! "$opts_force" = false ]; then
         # Call function to show error and quit
-        message_error 'An invalid option was provided.' 'opts_force';
+        message_error 'An invalid option was provided:' '--force';
       fi;
       ;;
     # Run distro/tag command
     'run' )
       # Check for invalid option `all`
-      if [ ! $opts_all == false ]; then
+      if [ ! "$opts_all" = false ]; then
         # Call function to show error and quit
-        message_error 'An invalid option was provided.' 'opts_all';
+        message_error 'An invalid option was provided:' '--all';
       fi;
       # Check for invalid option `force`
-      if [ ! $opts_force == false ]; then
+      if [ ! "$opts_force" = false ]; then
         # Call function to show error and quit
-        message_error 'An invalid option was provided.' 'opts_force';
+        message_error 'An invalid option was provided:' '--force';
       fi;
       ;;
   esac;
@@ -90,7 +90,7 @@ function docker_validate_options() {
 # Clean all untagged tags/distros
 function docker_clean_untagged() {
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "docker_clean_untagged";
   fi;
   # Call function to validate options
@@ -99,7 +99,7 @@ function docker_clean_untagged() {
   local command_prefix="sudo docker rmi";
   local command_opts="";
   # Force if option `force` is on
-  if [ $opts_force == true ]; then
+  if [ "$opts_force" = true ]; then
     local command_opts="${command_opts} --force";
   # Don't Force if option `force` is off
   else
@@ -119,7 +119,7 @@ function docker_clean_distro_tag() {
   local pass_distro=$1;
   local pass_tag=$2;
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "docker_clean_distro_tag ${pass_distro} ${pass_tag}";
   fi;
   # Call function to validate options
@@ -139,7 +139,7 @@ function docker_clean_distro_tag() {
   local command_prefix="sudo docker rmi";
   local command_opts="";
   # Force if option `force` is on
-  if [ $opts_force == true ]; then
+  if [ "$opts_force" = true ]; then
     local command_opts="${command_opts} --force";
   # Don't Force if option `force` is off
   else
@@ -164,7 +164,7 @@ function docker_clean_distro_tags() {
   # Get arguments
   local pass_distro=$1;
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "docker_clean_distro_tags ${pass_distro}";
   fi;
   # Call function to load a distro from configuration file
@@ -176,7 +176,7 @@ function docker_clean_distro_tags() {
 # Clean all tags for all distros
 function docker_clean_distros() {
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "docker_clean_distros";
   fi;
   # TODO
@@ -193,7 +193,7 @@ function docker_pull_distro_tag() {
   local pass_distro=$1;
   local pass_tag=$2;
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "docker_pull_distro_tag ${pass_distro} ${pass_tag}";
   fi;
   # Call function to validate options
@@ -231,7 +231,7 @@ function docker_pull_distro_tags() {
   # Get arguments
   local pass_distro=$1;
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "docker_pull_distro_tags ${pass_distro}";
   fi;
   # Call function to validate options
@@ -240,7 +240,7 @@ function docker_pull_distro_tags() {
   generic_load_distro_config $pass_distro;
   # Generate command
   # Option `all` is on
-  if [ $opts_all == true ]; then
+  if [ "$opts_all" = true ]; then
     local command_prefix="sudo docker pull";
     local command_opts="${command_opts} --all-tags";
     local command_args="${distro_info['codename']}";
@@ -259,7 +259,7 @@ function docker_pull_distro_tags() {
 # Pull all tags for all distros
 function docker_pull_distros() {
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "docker_pull_distros";
   fi;
   # TODO
@@ -276,7 +276,7 @@ function docker_build_distro_tag() {
   local pass_distro=$1;
   local pass_tag=$2;
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "docker_build_distro_tag ${pass_distro} ${pass_tag}";
   fi;
   # Call function to validate options
@@ -297,7 +297,7 @@ function docker_build_distro_tag() {
   local command_prefix="sudo docker build";
   local command_opts="";
   # Option `force` is on
-  if [ $opts_force == true ]; then
+  if [ "$opts_force" = true ]; then
     local command_opts="${command_opts} --force-rm";
   # Option `force` is off
   else
@@ -322,7 +322,7 @@ function docker_build_distro_tags() {
   # Get arguments
   local pass_distro=$1;
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "docker_build_distro_tags ${pass_distro}";
   fi;
   # Call function to load a distro from configuration file
@@ -334,7 +334,7 @@ function docker_build_distro_tags() {
 # Build all tags for all distros
 function docker_build_distros() {
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "docker_build_distros";
   fi;
   # TODO
@@ -351,7 +351,7 @@ function docker_run_distro_tag() {
   local pass_distro=$1;
   local pass_tag=$2;
   # Debugging
-  if [ $debug = true ]; then
+  if [ "$debug" = true ]; then
     message_info 'Function:' "docker_run_distro_tag ${pass_distro} ${pass_tag}";
   fi;
   # Call function to validate options
