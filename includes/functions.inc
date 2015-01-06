@@ -136,10 +136,6 @@ function menu_help() {
   echo -e "${txt_normal}║         ║  centos5      ║     5     ║";
   echo -e "${txt_normal}║ centos  ║  centos6      ║     6     ║";
   echo -e "${txt_normal}║         ║  centos7      ║     7     ║";
-  echo -e "${txt_normal}╠═════════╬═══════════════╬═══════════╣";
-  echo -e "${txt_normal}║         ║  zod          ║     6     ║";
-  echo -e "${txt_normal}║ fedora  ║  constantine  ║    12     ║";
-  echo -e "${txt_normal}║         ║  schrodinger  ║    19     ║";
   echo -e "${txt_normal}╚═════════╩═══════════════╩═══════════╝";
   echo -e "${txt_normal}";
   echo -e "${txt_normal}(*) Required arguments.${txt_normal}";
