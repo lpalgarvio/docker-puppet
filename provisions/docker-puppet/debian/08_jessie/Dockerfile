@@ -16,9 +16,12 @@ WORKDIR /root
 RUN echo "APT::Install-Recommends "\""false"\"";" >> /etc/apt/apt.conf;
 RUN echo "APT::Install-Suggests "\""false"\"";" >> /etc/apt/apt.conf;
 
-# Clear and Update the Apt cache
-RUN ["/bin/bash", "-c", "if [ ! -f /var/lib/apt/lists/lock ]; then \
-  apt-get clean all; apt-get update; fi;"]
+# Clear and Update the Apt cache if it is outdated
+RUN ["/bin/bash", "-c", "if [ \
+  \"$(stat -c %Y /var/lib/apt/lists/partial)\" -lt \
+  \"$(date +\"%s\" -d \"-3 days\")\" ]; \
+  then apt-get clean all; apt-get update; \
+  else echo \"Apt caches are up-to-date.\"; fi;"]
 
 # Install system dependencies
 RUN apt-get -qqy install apt-utils dialog bash-completion wget nano;
@@ -29,7 +32,7 @@ RUN cp -R /etc/skel/. /root;
 # Upgrade the Apt packages
 RUN apt-get -qqy upgrade;
 
-# Install Ruby and Rubygems
+# Install Ruby 2.x.x
 RUN apt-get -qqy install ruby ruby-dev rubygems-integration;
 
 # Configure Rubygems
