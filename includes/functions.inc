@@ -97,12 +97,12 @@ function question_yn() {
 
 # Show quick usage message
 function menu_usage() {
-  echo -e "${txt_special1}Usage: ${txt_normal}`basename $0` [options] {provisioner} {command} [distribution] [tag]";
+  echo -e "${txt_special1}Usage: ${txt_normal}`basename $0` [options] {command} {provisioner} [distribution] [tag]";
 }
 
 # Show long help message
 function menu_help() {
-  echo -e "${txt_special1}Usage: ${txt_normal}`basename $0` [options] {provisioner} {command} [distribution] [tag]";
+  echo -e "${txt_special1}Usage: ${txt_normal}`basename $0` [options] {command} {provisioner} [distribution] [tag]";
   echo -e "${txt_normal}";
   echo -e "${txt_special1}Options: ${txt_normal}";
   echo -e "${txt_normal}  -u, --usage                 show the quick usage message";
@@ -110,16 +110,16 @@ function menu_help() {
   echo -e "${txt_normal}  -a, --all=boolean           select all tags for operation";
   echo -e "${txt_normal}  -f, --force=boolean         force operation and overwrite files";
   echo -e "${txt_normal}";
-  echo -e "${txt_special1}Provisioners (*): ${txt_normal}";
-  echo -e "${txt_normal}  docker-base                 docker + base distro/tag images";
-  echo -e "${txt_normal}  docker-puppet               docker + puppet distro/tag images";
-  echo -e "${txt_normal}";
   echo -e "${txt_special1}Commands (*): ${txt_normal}";
   echo -e "${txt_normal}  cleanup                     remove untagged distro/tag images from local environment";
   echo -e "${txt_normal}  clean {dist} [tag]          remove distro/tag images from local environment";
   echo -e "${txt_normal}  pull {dist} [tag]           retrieve distro/tag images from remote server";
   echo -e "${txt_normal}  build {dist} [tag]          build distro/tag images on local environment";
   echo -e "${txt_normal}  run {dist} {tag}            run distro/tag images on local environment";
+  echo -e "${txt_normal}";
+  echo -e "${txt_special1}Provisioners (*): ${txt_normal}";
+  echo -e "${txt_normal}  docker-base                 docker + base distro/tag images";
+  echo -e "${txt_normal}  docker-puppet               docker + puppet distro/tag images";
   echo -e "${txt_normal}";
   echo -e "${txt_special1}Distributions and tags: ${txt_normal}";
   echo -e "${txt_normal}╔═════════╦═══════════════╦═══════════╗";

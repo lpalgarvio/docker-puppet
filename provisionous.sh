@@ -4,7 +4,7 @@
 #author		 :lpalgarvio <"lp.algarvio@gmail.com">
 #date            :20150105
 #version         :0.6
-#usage		 :bash provisionous.sh [options] {provisioner} {command} \
+#usage		 :bash provisionous.sh [options] {command} {provisioner} \
 #                  [distribution] [tag]
 #notes		 :Run scripts in install directory to install the dependencies.
 #bash_version    :4.2
@@ -115,8 +115,8 @@ done;
 
 # Store the arguments
 declare -g arguments="$*";
-declare -g args_provisioner=$1;
-declare -g args_command=$2;
+declare -g args_command=$1;
+declare -g args_provisioner=$2;
 declare -g args_distro=$3;
 declare -g args_tag=$4;
 
