@@ -2,8 +2,8 @@
 #title           :functions.inc
 #description     :Describes common functions.
 #author		 :lpalgarvio <"lp.algarvio@gmail.com">
-#date            :20150105
-#version         :0.6
+#date            :20150108
+#version         :0.9
 #usage		 :-
 #notes           :-
 #bash_version    :4.2
@@ -140,9 +140,92 @@ function menu_help() {
   echo -e "${txt_normal}";
   echo -e "${txt_normal}(*) Required arguments.${txt_normal}";
   echo -e "${txt_normal}";
-  echo -e "${txt_special2}Example #1: ${txt_normal}`basename $0` --all=true docker-base pull debian";
-  echo -e "${txt_special2}Example #2: ${txt_normal}`basename $0` docker-puppet pull debian wheezy";
-  echo -e "${txt_special2}Example #3: ${txt_normal}`basename $0` --force=true docker-puppet clean debian";
+  echo -e "${txt_special2}Example #1: ${txt_normal}`basename $0` --all=true pull docker-base debian";
+  echo -e "${txt_special2}Example #2: ${txt_normal}`basename $0` pull docker-puppet debian wheezy";
+  echo -e "${txt_special2}Example #3: ${txt_normal}`basename $0` --force=true clean docker-puppet debian";
+}
+
+#
+# Index provisions
+#
+
+# Generic: Search for a provision
+function generic_search_provision {
+  # Get the arguments
+  local pass_provision=${1};
+  # Debugging
+  if [ "$debug" = true ]; then
+    message_info 'Function:' "generic_search_provision ${pass_provision}";
+  fi;
+  # Get the provisions
+  local IFS=',';
+  local provisions=(${provision_info['provisions']});
+  # Cycle through provisions
+  for ((index=0; index<${#provisions[@]}; ++index));
+  do
+    # Get the current provision variable name
+    local current_provision='provision_'${provisions[$index]};
+    # Debugging
+    if [ "$debug" = true ]; then
+      eval "message_info '(Search) Provision:' \"\${${current_provision}['desc']}\"";
+    fi;
+    # Get the current provision codename
+    eval local current_codename="\${${current_provision}['codename']}";
+    # Compare the current provision with the search provision
+    if [ "$current_codename" == "$pass_provision" ]; then
+      # Get the current provision information
+      declare -gA RESULT;
+      eval RESULT['status']="\${${current_provision}['status']}";
+      eval RESULT['codename']="\${${current_provision}['codename']}";
+      eval RESULT['title']="\${${current_provision}['title']}";
+      eval RESULT['desc']="\${${current_provision}['desc']}";
+      eval RESULT['provisioner']="\${${current_provision}['provisioner']}";
+      eval RESULT['dir']="\${${current_provision}['dir']}";
+      # Debugging
+      if [ "$debug" = true ]; then
+        message_info 'Provision:' "${RESULT['desc']}";
+      fi;
+      # Return success
+      return 1;
+    fi;
+    # Clear variables
+    unset current_codename;
+  done;
+}
+
+# Generic: Load a provision from configuration file
+function generic_load_provision_config {
+  # Get arguments
+  local pass_provision=$1;
+  # Debugging
+  if [ "$debug" = true ]; then
+    message_info 'Function:' "generic_load_provision_config ${pass_provision}";
+  fi;
+  # Call function to search for provision
+  generic_search_provision $pass_provision;
+  local retval=$?;
+  # Store provision data
+  provision_info['status']=${RESULT['status']};
+  provision_info['codename']=${RESULT['codename']};
+  provision_info['title']=${RESULT['title']};
+  provision_info['desc']=${RESULT['desc']};
+  provision_info['provisioner']=${RESULT['provisioner']};
+  provision_info['dir']=${RESULT['dir']};
+  # Add paths to provision array
+  provision_info['provision_path']="${provisions_path}/${provision_info['dir']}";
+  provision_info['container_path']="${containers_path}/${provision_info['dir']}";
+  # Clear variables
+  unset RESULT;
+  # Check if a match was returned
+  if [ ! "$retval" -eq 1 ]; then
+    # Call function to show error and quit
+    message_error 'No match for provision.';
+  fi;
+  # Debugging
+  if [ "$debug" = true ]; then
+    message_info 'Provision:' "${provision_info['provision_path']}";
+    message_info 'Container' "${provision_info['container_path']}";
+  fi;
 }
 
 #
@@ -241,19 +324,10 @@ function generic_load_distro_config {
   if [ "$debug" = true ]; then
     message_info 'Function:' "generic_load_distro_config ${pass_distro}";
   fi;
-  # Docker-Base provisioner
-  if [ "$args_provisioner" == 'docker-base' ]; then
-    # Define paths
-    local provision_path="${provision_docker_base_path}/${pass_distro}";
-    local provision_inc="${provision_path}/${pass_distro}.${script_ext}";
-    local container_path="${container_docker_base_path}/${pass_distro}";
-  # Docker-Puppet provisioner
-  elif [ "$args_provisioner" == 'docker-puppet' ]; then
-    # Define paths
-    local provision_path="${provision_docker_puppet_path}/${pass_distro}";
-    local provision_inc="${provision_path}/${pass_distro}.${script_ext}";
-    local container_path="${container_docker_puppet_path}/${pass_distro}";
-  fi;
+  # Define paths
+  local provision_path="${provision_info['provision_path']}/${pass_distro}";
+  local provision_inc="${provision_path}/${pass_distro}.${script_ext}";
+  local container_path="${provision_info['container_path']}/${pass_distro}";
   # Import distro provision
   source "./${provision_inc}";
   # Add paths to distro array
@@ -274,16 +348,14 @@ function generic_load_distro_config {
 
 # Generic: Clean all untagged tags/distros
 function generic_clean_untagged() {
+  # Get arguments
+  local pass_provisioner=$1;
   # Debugging
   if [ "$debug" = true ]; then
-    message_info 'Function:' "generic_clean_untagged";
+    message_info 'Function:' "generic_clean_untagged ${pass_provisioner}";
   fi;
-  # Docker-Base provisioner
-  if [ "$args_provisioner" == 'docker-base' ]; then
-    # Call equivalent function
-    docker_clean_untagged;
-  # Docker-Puppet provisioner
-  elif [ "$args_provisioner" == 'docker-puppet' ]; then
+  # Docker provisioner
+  if [ "$pass_provisioner" == 'docker' ]; then
     # Call equivalent function
     docker_clean_untagged;
   fi;
@@ -292,18 +364,15 @@ function generic_clean_untagged() {
 # Generic: Clean a tag for a distro
 function generic_clean_distro_tag() {
   # Get arguments
-  local pass_distro=$1;
-  local pass_tag=$2;
+  local pass_provisioner=$1;
+  local pass_distro=$2;
+  local pass_tag=$3;
   # Debugging
   if [ "$debug" = true ]; then
-    message_info 'Function:' "generic_clean_distro_tag ${pass_distro} ${pass_tag}";
+    message_info 'Function:' "generic_clean_distro_tag ${pass_provisioner} ${pass_distro} ${pass_tag}";
   fi;
-  # Docker-Base provisioner
-  if [ "$args_provisioner" == 'docker-base' ]; then
-    # Call equivalent function
-    docker_clean_distro_tag $pass_distro $pass_tag;
-  # Docker-Puppet provisioner
-  elif [ "$args_provisioner" == 'docker-puppet' ]; then
+  # Docker provisioner
+  if [ "$pass_provisioner" == 'docker' ]; then
     # Call equivalent function
     docker_clean_distro_tag $pass_distro $pass_tag;
   fi;
@@ -312,17 +381,14 @@ function generic_clean_distro_tag() {
 # Generic: Clean all the tags for a distro
 function generic_clean_distro_tags() {
   # Get arguments
-  local pass_distro=$1;
+  local pass_provisioner=$1;
+  local pass_distro=$2;
   # Debugging
   if [ "$debug" = true ]; then
-    message_info 'Function:' "generic_clean_distro_tags ${pass_distro}";
+    message_info 'Function:' "generic_clean_distro_tags ${pass_provisioner} ${pass_distro}";
   fi;
-  # Docker-Base provisioner
-  if [ "$args_provisioner" == 'docker-base' ]; then
-    # Call equivalent function
-    docker_clean_distro_tags $pass_distro;
-  # Docker-Puppet provisioner
-  elif [ "$args_provisioner" == 'docker-puppet' ]; then
+  # Docker provisioner
+  if [ "$pass_provisioner" == 'docker' ]; then
     # Call equivalent function
     docker_clean_distro_tags $pass_distro;
   fi;
@@ -330,16 +396,14 @@ function generic_clean_distro_tags() {
 
 # Generic: Clean all tags for all distros
 function generic_clean_distros() {
+  # Get arguments
+  local pass_provisioner=$1;
   # Debugging
   if [ "$debug" = true ]; then
-    message_info 'Function:' "generic_clean_distros";
+    message_info 'Function:' "generic_clean_distros ${pass_provisioner}";
   fi;
-  # Docker-Base provisioner
-  if [ "$args_provisioner" == 'docker-base' ]; then
-    # Call equivalent function
-    docker_clean_distros;
-  # Docker-Puppet provisioner
-  elif [ "$args_provisioner" == 'docker-puppet' ]; then
+  # Docker provisioner
+  if [ "$pass_provisioner" == 'docker' ]; then
     # Call equivalent function
     docker_clean_distros;
   fi;
@@ -352,18 +416,15 @@ function generic_clean_distros() {
 # Generic: Pull a tag for a distro
 function generic_pull_distro_tag() {
   # Get arguments
-  local pass_distro=$1;
-  local pass_tag=$2;
+  local pass_provisioner=$1;
+  local pass_distro=$2;
+  local pass_tag=$3;
   # Debugging
   if [ "$debug" = true ]; then
-    message_info 'Function:' "generic_pull_distro_tag ${pass_distro} ${pass_tag}";
+    message_info 'Function:' "generic_pull_distro_tag ${pass_provisioner} ${pass_distro} ${pass_tag}";
   fi;
-  # Docker-Base provisioner
-  if [ "$args_provisioner" == 'docker-base' ]; then
-    # Call equivalent function
-    docker_pull_distro_tag $pass_distro $pass_tag;
-  # Docker-Puppet provisioner
-  elif [ "$args_provisioner" == 'docker-puppet' ]; then
+  # Docker provisioner
+  if [ "$pass_provisioner" == 'docker' ]; then
     # Call equivalent function
     docker_pull_distro_tag $pass_distro $pass_tag;
   fi;
@@ -372,17 +433,14 @@ function generic_pull_distro_tag() {
 # Generic: Pull all the tags for a distro
 function generic_pull_distro_tags() {
   # Get arguments
-  local pass_distro=$1;
+  local pass_provisioner=$1;
+  local pass_distro=$2;
   # Debugging
   if [ "$debug" = true ]; then
-    message_info 'Function:' "generic_pull_distro_tags ${pass_distro}";
+    message_info 'Function:' "generic_pull_distro_tags ${pass_provisioner} ${pass_distro}";
   fi;
-  # Docker-Base provisioner
-  if [ "$args_provisioner" == 'docker-base' ]; then
-    # Call equivalent function
-    docker_pull_distro_tags $pass_distro;
-  # Docker-Puppet provisioner
-  elif [ "$args_provisioner" == 'docker-puppet' ]; then
+  # Docker provisioner
+  if [ "$pass_provisioner" == 'docker' ]; then
     # Call equivalent function
     docker_pull_distro_tags $pass_distro;
   fi;
@@ -390,16 +448,14 @@ function generic_pull_distro_tags() {
 
 # Generic: Pull all tags for all distros
 function generic_pull_distros() {
+  # Get arguments
+  local pass_provisioner=$1;
   # Debugging
   if [ "$debug" = true ]; then
-    message_info 'Function:' "generic_pull_distros";
+    message_info 'Function:' "generic_pull_distros ${pass_provisioner}";
   fi;
-  # Docker-Base provisioner
-  if [ "$args_provisioner" == 'docker-base' ]; then
-    # Call equivalent function
-    docker_pull_distros;
-  # Docker-Puppet provisioner
-  elif [ "$args_provisioner" == 'docker-puppet' ]; then
+  # Docker provisioner
+  if [ "$pass_provisioner" == 'docker' ]; then
     # Call equivalent function
     docker_pull_distros;
   fi;
@@ -412,18 +468,15 @@ function generic_pull_distros() {
 # Generic: Build a tag for a distro
 function generic_build_distro_tag() {
   # Get arguments
-  local pass_distro=$1;
-  local pass_tag=$2;
+  local pass_provisioner=$1;
+  local pass_distro=$2;
+  local pass_tag=$3;
   # Debugging
   if [ "$debug" = true ]; then
-    message_info 'Function:' "generic_build_distro_tag ${pass_distro} ${pass_tag}";
+    message_info 'Function:' "generic_build_distro_tag ${pass_provisioner} ${pass_distro} ${pass_tag}";
   fi;
-  # Docker-Base provisioner
-  if [ "$args_provisioner" == 'docker-base' ]; then
-    # Call function to show error and quit
-    message_error 'Nothing to build.';
-  # Docker-Puppet provisioner
-  elif [ "$args_provisioner" == 'docker-puppet' ]; then
+  # Docker provisioner
+  if [ "$pass_provisioner" == 'docker' ]; then
     # Call equivalent function
     docker_build_distro_tag $pass_distro $pass_tag;
   fi;
@@ -432,17 +485,14 @@ function generic_build_distro_tag() {
 # Generic: Build all the tags for a distro
 function generic_build_distro_tags() {
   # Get arguments
-  local pass_distro=$1;
+  local pass_provisioner=$1;
+  local pass_distro=$2;
   # Debugging
   if [ "$debug" = true ]; then
-    message_info 'Function:' "generic_build_distro_tags ${pass_distro}";
+    message_info 'Function:' "generic_build_distro_tags ${pass_provisioner} ${pass_distro}";
   fi;
-  # Docker-Base provisioner
-  if [ "$args_provisioner" == 'docker-base' ]; then
-    # Call function to show error and quit
-    message_error 'Nothing to build.';
-  # Docker-Puppet provisioner
-  elif [ "$args_provisioner" == 'docker-puppet' ]; then
+  # Docker provisioner
+  if [ "$pass_provisioner" == 'docker' ]; then
     # Call equivalent function
     docker_build_distro_tags $pass_distro;
   fi;
@@ -450,16 +500,14 @@ function generic_build_distro_tags() {
 
 # Generic: Build all tags for all distros
 function generic_build_distros() {
+  # Get arguments
+  local pass_provisioner=$1;
   # Debugging
   if [ "$debug" = true ]; then
-    message_info 'Function:' "generic_build_distros";
+    message_info 'Function:' "generic_build_distros ${pass_provisioner}";
   fi;
-  # Docker-Base provisioner
-  if [ "$args_provisioner" == 'docker-base' ]; then
-    # Call function to show error and quit
-    message_error 'Nothing to build.';
-  # Docker-Puppet provisioner
-  elif [ "$args_provisioner" == 'docker-puppet' ]; then
+  # Docker provisioner
+  if [ "$pass_provisioner" == 'docker' ]; then
     # Call equivalent function
     docker_build_distros;
   fi;
@@ -472,18 +520,15 @@ function generic_build_distros() {
 # Generic: Run a tag from a distro
 function generic_run_distro_tag() {
   # Get arguments
-  local pass_distro=$1;
-  local pass_tag=$2;
+  local pass_provisioner=$1;
+  local pass_distro=$2;
+  local pass_tag=$3;
   # Debugging
   if [ "$debug" = true ]; then
-    message_info 'Function:' "generic_run_distro_tag ${pass_distro} ${pass_tag}";
+    message_info 'Function:' "generic_run_distro_tag ${pass_provisioner} ${pass_distro} ${pass_tag}";
   fi;
-  # Docker-Base provisioner
-  if [ "$args_provisioner" == 'docker-base' ]; then
-    # Call equivalent function
-    docker_run_distro_tag $pass_distro $pass_tag;
-  # Docker-Puppet provisioner
-  elif [ "$args_provisioner" == 'docker-puppet' ]; then
+  # Docker provisioner
+  if [ "$pass_provisioner" == 'docker' ]; then
     # Call equivalent function
     docker_run_distro_tag $pass_distro $pass_tag;
   fi;

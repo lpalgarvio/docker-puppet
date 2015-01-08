@@ -1,9 +1,9 @@
 #!/bin/bash
-#title           :docker-puppet.inc
-#description     :Docker-Puppet provider functions.
+#title           :docker.inc
+#description     :Docker provisioner functions.
 #author		 :lpalgarvio <"lp.algarvio@gmail.com">
-#date            :20150105
-#version         :0.6
+#date            :20150108
+#version         :0.9
 #usage		 :-
 #notes           :-
 #bash_version    :4.1.5(1)-release

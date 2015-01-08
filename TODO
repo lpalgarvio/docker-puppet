@@ -1,6 +1,7 @@
 TODO:
  * readme
- * check distro/tag status
+ * check provision/distro/tag status
+ * check operation status in tags
  * confirm operations
  * search, list, delete images
   - sudo docker images | grep "^centos" | awk "{print $3}"
@@ -8,6 +9,9 @@ TODO:
  * flexibility in provisioners with support for custom provisions
  * test/fix tags
  * finish distros
+ * review terminoloy
+ * add custom provision
+ * move commands in dockerfiles to scripts
  * add rhel: https://access.redhat.com/search/browse/container-images#?
  * add puppet
 

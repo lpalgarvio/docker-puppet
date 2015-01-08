@@ -2,8 +2,8 @@
 #title           :config.inc
 #description     :Main configuration file.
 #author		 :lpalgarvio <"lp.algarvio@gmail.com">
-#date            :20150105
-#version         :0.6
+#date            :20150108
+#version         :0.9
 #usage		 :-
 #notes		 :-
 #bash_version    :4.2
@@ -35,14 +35,26 @@ declare -g functions_inc="${includes_path}/functions.${script_ext}";
 declare -g docker_inc="${includes_path}/docker.${script_ext}";
 
 #
-# Paths for Docker/Base
+# Provisions
 #
-declare -g provision_docker_base_path="${provisions_path}/docker-base";
-declare -g container_docker_base_path="${containers_path}/docker-base";
+declare -gA provision_info;
+provision_info['provisions']='01,02';
 
-#
-# Paths for Docker/Puppet
-#
-declare -g provision_docker_puppet_path="${provisions_path}/docker-puppet";
-declare -g container_docker_puppet_path="${containers_path}/docker-puppet";
+# ...
+declare -gA provision_01;
+provision_01['status']=true;
+provision_01['codename']='docker-base';
+provision_01['title']='Docker/Base';
+provision_01['desc']='Docker/Base';
+provision_01['provisioner']='docker';
+provision_01['dir']='docker-base';
+
+# solict/provisionous-docker-puppet
+declare -gA provision_02;
+provision_02['status']=true;
+provision_02['codename']='docker-puppet';
+provision_02['title']='Docker/Puppet';
+provision_02['desc']='Docker/Puppet';
+provision_02['provisioner']='docker';
+provision_02['dir']='docker-puppet';
 

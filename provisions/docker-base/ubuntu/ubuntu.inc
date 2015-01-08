@@ -1,12 +1,12 @@
 #!/bin/bash
-#title		:ubuntu.inc
-#description	:Configuration for Docker/Base/Ubuntu/* images
-#author		:lpalgarvio <'lp.algarvio@gmail.com'>
-#date		:20150105
-#version	:0.6
-#usage		:-
-#notes		:-
-#bash_version	:4.2
+#title		 :ubuntu.inc
+#description	 :Configuration for Docker/Base/Ubuntu/* images
+#author		 :lpalgarvio <'lp.algarvio@gmail.com'>
+#date		 :20150108
+#version         :0.9
+#usage		 :-
+#notes		 :-
+#bash_version	 :4.2
 #==============================================================================
 
 #

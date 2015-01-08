@@ -1,12 +1,12 @@
 #!/bin/bash
-#title		:debian.inc
-#description	:Configuration for Docker/Base/Debian/* images
-#author		:lpalgarvio <'lp.algarvio@gmail.com'>
-#date		:20150105
-#version	:0.6
-#usage		:-
-#notes		:-
-#bash_version	:4.2
+#title		 :debian.inc
+#description	 :Configuration for Docker/Base/Debian/* images
+#author		 :lpalgarvio <'lp.algarvio@gmail.com'>
+#date		 :20150108
+#version         :0.9
+#usage		 :-
+#notes		 :-
+#bash_version	 :4.2
 #==============================================================================
 
 #
