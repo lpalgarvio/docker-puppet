@@ -1,0 +1,115 @@
+v0.9
+Minor version
+Development, refactoring and bug-fixing
+Thu Jan 8 2015 18:08:18 2015 +0000
+
+Changes since v0.8:
+
+* 7a55d5237f27dcea2f9c8ddce3c93e448dfa8d36 by lpalgarvio: Added CHANGELOG; Renamed provisions; Added custom provision
+* 1f6ce8207dcac0e8d12286efe89358ffdce37889 by lpalgarvio: Refactored scripts to allow custom provisions
+* edc49bb58faee2a85da84f815491a74dff5da641 by lpalgarvio: Change order of arguments
+* 7e1575adec9b81f273314fe996d035d124e920a5 by lpalgarvio: Added dockerfiles for centos
+* e59e2cb1decb049a918baace61dcfb733f0558e7 by lpalgarvio: Removed fedora distro on the grounds of being fast release, no support for older tags, and could not find repositories with older versions. Maintenance nightmare.
+* 432a24aa2bf0e771c734f33ad39a05c7e610bb02 by lpalgarvio: Refactoring of common+provisioners->includes and config.inc
+* 2950aa8d7488eaa25e2f386d7172234cc0a2c3ca by lpalgarvio: Updated debian dockerfiles; Added ubuntu dockerfiles; Fixed apt-get in and cleaned dockerfiles
+
+
+v0.8
+Minor version
+Development, refactoring and bug-fixing
+Tue Jan 6 2015 q16:35:42 2015 +0000
+
+Changes since v0.7:
+
+* fda806062e5834102ce8ba74c5f111a2a7467071 by lpalgarvio: Changes to provisions; Added containers; Added new settings
+* d2e1c7797311f356e15d9d9cc5ca7c7bb909bc7e by lpalgarvio: Fixed bug in option parsing; Updated help message; Improved coding standards; Added function for showing question; Changed generic_search_distro_tag() function to search also by version
+* 3c0d1d1bedc8d4229067c9c8bd97ae9b5977aafd by lpalgarvio: Refactored options to support boolean arguments; Refactored help/usage message; Added todo
+
+
+v0.7
+Minor version
+Development and refactoring
+Mon Jan 5 2015 20:40:18 2015 +0000
+
+Changes since v0.6:
+
+* 6378328850710ee0c3ad0f97790ad62b9c1d4d4a by lpalgarvio: Refactored error handling, debugging, formatting, usage information, validation and arguments; Added options; Added cleanup command;
+
+
+v0.6
+Minor version
+Development, refactoring and bug-fixing
+Mon Jan 5 2015 14:48:55 2015 +0000
+
+Changes since v0.5:
+
+* 692b7532214d121962687c0bafa512ecd5aea513 by lpalgarvio: Added support for Docker-Base provisioner; Refactored directory structure; Refactored up local and global variables; Fixed argument_instructions descriptions
+* 316345091e9346f417a5f258d36cd88a05206ebd by lpalgarvio: Fixed provisionous helper function argument_instructions; Cleanup
+* 6379d45453deebb0b1cc3e02a6b24dc8138c764c by lpalgarvio: Added placeholders for docker-puppet distros commands
+* 5c5127e6f2ad0fe425efab45b630ec4356485a6d by lpalgarvio: Fixed provisionous helper function argument_instructions; Added Run command
+* 7093c3857aa2e6e1c18a67be97f2e868d13892c7 by lpalgarvio: Fixed paths in docker-puppet build
+* 47fd7d6c8b1b9939b19f8e381b0bc67931ec0fc7 by lpalgarvio: Quick changes in comments
+
+
+v0.5
+Minor version
+Refactoring and bug-fixing
+Wed Dec 31 2014 16:58:49 2014 +0000
+
+Changes since v0.4:
+
+* 3feeeb521d7992a53ee67f3837543dfd4b31ab8d by lpalgarvio: Refactoring complete: cleanup and various small fixes
+* 6b8a1561c30952bce89ef60f0586f96f98fd3099 by lpalgarvio: Refactored scripts: added main script, global configuration, common functions and docker-puppet functions
+* 3f3bdc1df517d18c1b290216bae2647a2b32706a by lpalgarvio: Refactored namespaces, paths and filenames for docker-puppet; Updated distro configurations for docker-puppet
+* 135101bdc63a47a34abd457575922c45be876d97 by lpalgarvio: Added configuration files for docker-puppet distros; Removed docker-puppet scripts that are being replaced by universal scripts
+
+
+v0.4
+Minor version
+Refactoring
+Mon Dec 29 2014 18:58:15 2014 +0000
+
+Changes since v0.3:
+
+* 2982a44dda9698263f9a62727a5782d17536bfb9 by lpalgarvio: Namespace changes; Refactoring of scripts; Added scripts per distro/provisioner
+* fb6799ff519fdc01245d11be1ad6e653bb4503e1 by lpalgarvio: Namespace changes
+
+
+v0.3
+Minor version
+Development
+Sat Dec 27 2014 06:04:29 2014 +0000
+
+Changes since v0.2:
+
+* 3c0abc5c961144eaa6691fbb065c703855ee9d70 by lpalgarvio: Updated docker-install script to includes procedures for CentOS and Fedora distros
+
+
+v0.2
+Minor version
+Development and bug-fixing
+Fri Dec 26 2014 23:21:11 2014 +0000
+
+Changes since v0.1:
+
+* e2c843bb06dbfbe211391001daad625a08430d4e by lpalgarvio: Added script headers; Updated formatting in the scripts
+* 043ef7facbcb02ef3337f641f3233d21c331e82c by lpalgarvio: Updated Debian installation docker script; Added procedures for Ubuntu and Linux Mint installation docker script
+* 2e140ed299f9c9d138ebe0b3d75fef13651f0b7c by lpalgarvio: Added installation procedures for Debian distributions in docker-install.sh
+* 623a90d065dfb75ab9ed0c21c8c726c34c30cab8 by lpalgarvio: Various improvements to docker-install and system-info scripts: major/minor OS versions, OS family, small fixes
+* 1a3afff171d492ce3ddee5dbd238199c940626bd by lpalgarvio: Added unfinished docker-install and system-info scripts
+* 4e7f52629809f48c3191d48c224cb0b36ea652b6 by lpalgarvio: Updated repositorioes/tags in docker-build script; Added docker-cleanup script
+
+
+v0.1
+Minor version
+Development
+Fri Dec 26 2014 10:45:11 2014 +0000
+
+Changes since init:
+
+* 5f67541fa30c08e222e552ada5adaa2de455826a by lpalgarvio: Updated build script; Renamed build script; Added pull script
+* af497cfeb25586680ed8a4f2a02c0d3e28176585 by lpalgarvio: Added prompts to build.sh
+* 9ef0d443c8d413995b26d6a769e8199d57747328 by lpalgarvio: Added directives to Debian Dockerfiles to install ruby, ruby-dev, puppet, librarian-puppet and assorted tools and dependencies, plus bare configuration
+* 8551f5ebf27107869a900e2fc9a8a3d7914a24b1 by lpalgarvio: Added build.sh to automatically build images
+* dbc27aed2d1a64a9b13363d09bd41e1d7a4ff77e by lpalgarvio: Added bare docker configuration files
+* 13ff29904659ada2029b5e7d0b2981b1880e834c by lpalgarvio: Initial commit

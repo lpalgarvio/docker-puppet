@@ -1,6 +1,6 @@
 #!/bin/bash
 #title		 :debian.inc
-#description	 :Configuration for Docker/Base/Debian/* images
+#description	 :Configuration for Provisionous Docker/Puppet/Debian/* images
 #author		 :lpalgarvio <'lp.algarvio@gmail.com'>
 #date		 :20150108
 #version         :0.9
@@ -19,7 +19,7 @@ distro_info['status']=true;
 distro_info['family']='debian';
 distro_info['codename']='debian';
 distro_info['title']='Debian';
-distro_info['desc']='Docker/Base/Debian';
+distro_info['desc']='Provisionous Docker/Puppet/Debian';
 distro_info['dir']='debian';
 distro_info['tags']='06,07,08';
 
@@ -33,14 +33,14 @@ distro_tag_06['status']=true;
 distro_tag_06['version']='6';
 distro_tag_06['codename']='squeeze';
 distro_tag_06['title']='Debian 6 (squeeze)';
-distro_tag_06['desc']='Docker/Base/Debian/6 (squeeze)';
-distro_tag_06['url']='debian:squeeze';
+distro_tag_06['desc']='Provisionous Docker/Puppet/Debian/6 (squeeze)';
+distro_tag_06['url']='solict/provisionous-puppet-debian:squeeze';
 distro_tag_06['shell']='/bin/bash';
-distro_tag_06['provision']=false;
-distro_tag_06['provision_dir']='';
-distro_tag_06['container']=false;
-distro_tag_06['container_dir']='';
-distro_tag_06['container_mnt']='';
+distro_tag_06['provision']=true;
+distro_tag_06['provision_dir']='06_squeeze';
+distro_tag_06['container']=true;
+distro_tag_06['container_dir']='06_squeeze';
+distro_tag_06['container_mnt']='/srv';
 
 # Debian 7 (wheezy)
 declare -gA distro_tag_07;
@@ -48,14 +48,14 @@ distro_tag_07['status']=true;
 distro_tag_07['version']='7';
 distro_tag_07['codename']='wheezy';
 distro_tag_07['title']='Debian 7 (wheezy)';
-distro_tag_07['desc']='Docker/Base/Debian/7 (wheezy)';
-distro_tag_07['url']='debian:wheezy';
+distro_tag_07['desc']='Provisionous Docker/Puppet/Debian/7 (wheezy)';
+distro_tag_07['url']='solict/provisionous-puppet-debian:wheezy';
 distro_tag_07['shell']='/bin/bash';
-distro_tag_07['provision']=false;
-distro_tag_07['provision_dir']='';
-distro_tag_07['container']=false;
-distro_tag_07['container_dir']='';
-distro_tag_07['container_mnt']='';
+distro_tag_07['provision']=true;
+distro_tag_07['provision_dir']='07_wheezy';
+distro_tag_07['container']=true;
+distro_tag_07['container_dir']='07_wheezy';
+distro_tag_07['container_mnt']='/srv';
 
 # Debian 8 (jessie)
 declare -gA distro_tag_08;
@@ -63,12 +63,12 @@ distro_tag_08['status']=true;
 distro_tag_08['version']='8';
 distro_tag_08['codename']='jessie';
 distro_tag_08['title']='Debian 8 (jessie)';
-distro_tag_08['desc']='Docker/Base/Debian/8 (jessie)';
-distro_tag_08['url']='debian:jessie';
+distro_tag_08['desc']='Provisionous Docker/Puppet/Debian/8 (jessie)';
+distro_tag_08['url']='solict/provisionous-puppet-debian:jessie';
 distro_tag_08['shell']='/bin/bash';
-distro_tag_08['provision']=false;
-distro_tag_08['provision_dir']='';
-distro_tag_08['container']=false;
-distro_tag_08['container_dir']='';
-distro_tag_08['container_mnt']='';
+distro_tag_08['provision']=true;
+distro_tag_08['provision_dir']='08_jessie';
+distro_tag_08['container']=true;
+distro_tag_08['container_dir']='08_jessie';
+distro_tag_08['container_mnt']='/srv';
 
