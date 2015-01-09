@@ -21,7 +21,7 @@ distro_info['codename']='debian';
 distro_info['title']='Debian';
 distro_info['desc']='Provisionous Docker/Puppet/Debian';
 distro_info['dir']='debian';
-distro_info['tags']='06,07,08';
+distro_info['tags']='06,06_rvm,07,07_rvm,08,08_rvm';
 
 #
 # Distribution releases/tags
@@ -42,6 +42,21 @@ distro_tag_06['container']=true;
 distro_tag_06['container_dir']='06_squeeze';
 distro_tag_06['container_mnt']='/srv';
 
+# Debian 6 (squeeze) RVM
+declare -gA distro_tag_06_rvm;
+distro_tag_06_rvm['status']=true;
+distro_tag_06_rvm['version']='6_rvm';
+distro_tag_06_rvm['codename']='squeeze_rvm';
+distro_tag_06_rvm['title']='Debian 6 (squeeze) RVM';
+distro_tag_06_rvm['desc']='Provisionous Docker/Puppet/Debian/6 (squeeze) RVM';
+distro_tag_06_rvm['url']='solict/provisionous-puppet-debian:squeeze_rvm';
+distro_tag_06_rvm['shell']='/bin/bash';
+distro_tag_06_rvm['provision']=true;
+distro_tag_06_rvm['provision_dir']='06_squeeze_rvm';
+distro_tag_06_rvm['container']=true;
+distro_tag_06_rvm['container_dir']='06_squeeze_rvm';
+distro_tag_06_rvm['container_mnt']='/srv';
+
 # Debian 7 (wheezy)
 declare -gA distro_tag_07;
 distro_tag_07['status']=true;
@@ -57,6 +72,21 @@ distro_tag_07['container']=true;
 distro_tag_07['container_dir']='07_wheezy';
 distro_tag_07['container_mnt']='/srv';
 
+# Debian 7 (wheezy) RVM
+declare -gA distro_tag_07_rvm;
+distro_tag_07_rvm['status']=true;
+distro_tag_07_rvm['version']='7_rvm';
+distro_tag_07_rvm['codename']='wheezy_rvm';
+distro_tag_07_rvm['title']='Debian 7 (wheezy) RVM';
+distro_tag_07_rvm['desc']='Provisionous Docker/Puppet/Debian/7 (wheezy) RVM';
+distro_tag_07_rvm['url']='solict/provisionous-puppet-debian:wheezy_rvm';
+distro_tag_07_rvm['shell']='/bin/bash';
+distro_tag_07_rvm['provision']=true;
+distro_tag_07_rvm['provision_dir']='07_wheezy_rvm';
+distro_tag_07_rvm['container']=true;
+distro_tag_07_rvm['container_dir']='07_wheezy_rvm';
+distro_tag_07_rvm['container_mnt']='/srv';
+
 # Debian 8 (jessie)
 declare -gA distro_tag_08;
 distro_tag_08['status']=true;
@@ -71,4 +101,19 @@ distro_tag_08['provision_dir']='08_jessie';
 distro_tag_08['container']=true;
 distro_tag_08['container_dir']='08_jessie';
 distro_tag_08['container_mnt']='/srv';
+
+# Debian 8 (jessie) RVM
+declare -gA distro_tag_08_rvm;
+distro_tag_08_rvm['status']=true;
+distro_tag_08_rvm['version']='8_rvm';
+distro_tag_08_rvm['codename']='jessie_rvm';
+distro_tag_08_rvm['title']='Debian 8 (jessie) RVM';
+distro_tag_08_rvm['desc']='Provisionous Docker/Puppet/Debian/8 (jessie) RVM';
+distro_tag_08_rvm['url']='solict/provisionous-puppet-debian:jessie_rvm';
+distro_tag_08_rvm['shell']='/bin/bash';
+distro_tag_08_rvm['provision']=true;
+distro_tag_08_rvm['provision_dir']='08_jessie_rvm';
+distro_tag_08_rvm['container']=true;
+distro_tag_08_rvm['container_dir']='08_jessie_rvm';
+distro_tag_08_rvm['container_mnt']='/srv';
 

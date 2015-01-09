@@ -1,5 +1,5 @@
 ###############################################################################
-# Provisionous Docker/Puppet profile
+# Provisionous Docker/Puppet RVM profile
 # OS: CentOS 7 (centos7)
 # Equivalent: RHEL 7, Fedora 19 (schrodinger)
 ###############################################################################
@@ -49,31 +49,28 @@ RUN yum -y upgrade && \
 # Update keys
 RUN gpg --refresh-keys;
 
-# Puppet key/repo, for Puppet packages
-RUN wget -q http://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs && \
-    gpg --import RPM-GPG-KEY-puppetlabs && \
-    rpm --import RPM-GPG-KEY-puppetlabs && \
-    rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm && \
-    yum clean packages;
+# RVM key, for alternative Ruby packages
+RUN gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3;
 
 # Update the PMS cache
 RUN yum makecache;
 
 #
-# Ruby (via PMS)
+# RVM and Ruby (via rvm)
 #
 
-# Install Ruby 2.0.x (from base)
-RUN yum -y install ruby ruby-devel rubygems && \
+# Install RVM latest
+RUN wget -q get.rvm.io | bash -s stable;
+
+# Install system dependencies for ruby
+RUN /bin/bash -l -c "rvm requirements" && \
     yum clean packages;
 
-#
-# Puppet (via PMS)
-#
+# Install Ruby 2.0-latest (2.2 not supported in puppet)
+RUN /bin/bash -l -c "rvm install 2.0-latest";
 
-# Install Puppet 3.7.x (from puppetlabs)
-RUN yum -y install puppet && \
-    yum clean packages;
+# Set default Ruby interpreter
+RUN /bin/bash -l -c "rvm use 2.0-latest --default";
 
 #
 # Rubygems (via rubygems)
@@ -85,6 +82,6 @@ RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc;
 # Install Bundler latest gem
 RUN /bin/bash -l -c "gem install bundler";
 
-# Install Librarian-puppet 2.0.1 (for ruby >=1.9.x) gems
-RUN /bin/bash -l -c "gem install librarian-puppet -v 2.0.1";
+# Install Puppet latest and Librarian-puppet latest (for ruby >=1.9.x) gems
+RUN /bin/bash -l -c "gem install puppet librarian-puppet";
 

@@ -1,18 +1,18 @@
 v0.9
 Minor version
 Development, refactoring and bug-fixing
-Thu Jan 8 2015 18:08:18 2015 +0000
+Fri Jan 9 21:21:47 2015 +0000
 
 Changes since v0.8:
 
-* 7a55d5237f27dcea2f9c8ddce3c93e448dfa8d36 by lpalgarvio: Added CHANGELOG; Renamed provisions; Added custom provision
+* 485bd66caaeedee5f584248d5903350e5496bb87 by lpalgarvio: Reviewed provisions' requirements, repositories and packages; Updated and cleaned all the provisions' dockerfiles; Added dockerfiles for RVM provisions; Updated provisions configuration file; Updated TODO
+* 1f46491f09f63554fc02a638b5eb0e7d3f8aa6cc by lpalgarvio: Added CHANGELOG; Renamed provisions; Added custom provision
 * 1f6ce8207dcac0e8d12286efe89358ffdce37889 by lpalgarvio: Refactored scripts to allow custom provisions
 * edc49bb58faee2a85da84f815491a74dff5da641 by lpalgarvio: Change order of arguments
 * 7e1575adec9b81f273314fe996d035d124e920a5 by lpalgarvio: Added dockerfiles for centos
 * e59e2cb1decb049a918baace61dcfb733f0558e7 by lpalgarvio: Removed fedora distro on the grounds of being fast release, no support for older tags, and could not find repositories with older versions. Maintenance nightmare.
 * 432a24aa2bf0e771c734f33ad39a05c7e610bb02 by lpalgarvio: Refactoring of common+provisioners->includes and config.inc
 * 2950aa8d7488eaa25e2f386d7172234cc0a2c3ca by lpalgarvio: Updated debian dockerfiles; Added ubuntu dockerfiles; Fixed apt-get in and cleaned dockerfiles
-
 
 v0.8
 Minor version

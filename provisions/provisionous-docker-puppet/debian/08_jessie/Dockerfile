@@ -7,43 +7,83 @@
 FROM debian:jessie
 MAINTAINER Luís Pedro Algarvio <lp.algarvio@gmail.com>
 
-# Configure the enviroment
+#
+# Environment
+#
+
 ENV TERM linux
 RUN export DEBIAN_FRONTEND="noninteractive";
-WORKDIR /root
+RUN mkdir -p /root/setup;
+WORKDIR /root/setup
 
-# Configure Apt
-RUN echo "APT::Install-Recommends "\""false"\"";" >> /etc/apt/apt.conf;
-RUN echo "APT::Install-Suggests "\""false"\"";" >> /etc/apt/apt.conf;
+#
+# Package Management System initialization
+#
 
-# Clear and Update the Apt cache if it is outdated
+# Configure the PMS
+RUN echo "APT::Install-Recommends "\""false"\"";" >> /etc/apt/apt.conf && \
+    echo "APT::Install-Suggests "\""false"\"";" >> /etc/apt/apt.conf;
+
+# Clear and Update the PMS cache if it is outdated
 RUN ["/bin/bash", "-c", "if [ \
-  \"$(stat -c %Y /var/lib/apt/lists/partial)\" -lt \
-  \"$(date +\"%s\" -d \"-3 days\")\" ]; \
-  then apt-get clean all; apt-get update; \
-  else echo \"Apt caches are up-to-date.\"; fi;"]
+    \"$(stat -c %Y /var/lib/apt/lists/partial)\" -lt \
+    \"$(date +\"%s\" -d \"-3 days\")\" \
+    ]; then apt-get clean; apt-get update; \
+    else echo \"PMS caches are up-to-date.\"; fi;"]
+
+#
+# System dependencies and upgrades
+#
 
 # Install system dependencies
-RUN apt-get -qqy install apt-utils dialog bash-completion wget nano;
+RUN apt-get -qqy install apt-utils dialog bash-completion gnupg wget nano \
+    make gcc tar procps debianutils && \
+    apt-get clean;
 
-# Configure /root profile
+# Replace /root files with files from /etc/skel
 RUN cp -R /etc/skel/. /root;
 
-# Upgrade the Apt packages
-RUN apt-get -qqy upgrade;
+# Upgrade the packages
+RUN apt-get -qqy upgrade && \
+    apt-get clean;
 
-# Install Ruby 2.x.x
-RUN apt-get -qqy install ruby ruby-dev rubygems-integration;
+#
+# Repositories and GPG keys
+#
+
+# Update keys
+RUN gpg --refresh-keys && \
+    apt-key update;
+
+# Update the PMS cache
+RUN apt-get update;
+
+#
+# Ruby (via PMS)
+#
+
+# Install Ruby 2.0.x (from main)
+RUN apt-get -qqy install ruby ruby-dev rubygems-integration && \
+    apt-get clean;
+
+#
+# Puppet (via PMS)
+#
+
+# Install Puppet 3.7.x (from main)
+RUN apt-get -qqy install puppet && \
+    apt-get clean;
+
+#
+# Rubygems (via rubygems)
+#
 
 # Configure Rubygems
 RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc;
 
-# Install Puppet
-RUN apt-get -qqy install puppet;
+# Install Bundler latest gem
+RUN /bin/bash -l -c "gem install bundler";
 
-# Install system dependencies
-RUN apt-get -qqy install make gcc;
-
-# Install Librarian for Puppet
-RUN gem install librarian-puppet;
+# Install Librarian-puppet 2.0.1 (for ruby >=1.9.x) gems
+RUN /bin/bash -l -c "gem install librarian-puppet -v 2.0.1";
 

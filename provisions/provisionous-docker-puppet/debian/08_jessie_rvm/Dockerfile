@@ -1,10 +1,10 @@
 ###############################################################################
-# Provisionous Docker/Puppet profile
-# OS: Ubuntu 10.04 (lucid)
-# Equivalent: Debian 6 (squeeze)
+# Provisionous Docker/Puppet RVM profile
+# OS: Debian 8 (jessie)
+# Equivalent: Ubuntu 12.04 (trusty)
 ###############################################################################
 
-FROM ubuntu:lucid
+FROM debian:jessie
 MAINTAINER Luís Pedro Algarvio <lp.algarvio@gmail.com>
 
 #
@@ -55,39 +55,28 @@ RUN apt-get -qqy upgrade && \
 RUN gpg --refresh-keys && \
     apt-key update;
 
-# Brightbox key/repo, for updated Ruby packages
-RUN gpg --keyserver keys.gnupg.net --recv-keys C3173AA6 && \
-    apt-key adv --keyserver keys.gnupg.net --recv-keys C3173AA6;
-RUN ["/bin/bash", "-c", "echo \"deb \
-    http://ppa.launchpad.net/brightbox/ruby-ng-experimental/ubuntu \
-    lucid   main\" > \
-    /etc/apt/sources.list.d/brightbox-ruby-ng-experimental.list;"]
-
-# Puppet key/repo, for updated Puppet packages
-RUN gpg --keyserver keys.gnupg.net --recv-keys 4BD6EC30 && \
-    apt-key adv --keyserver keys.gnupg.net --recv-keys 4BD6EC30 && \
-    wget -q http://apt.puppetlabs.com/puppetlabs-release-lucid.deb && \
-    dpkg -i puppetlabs-release-lucid.deb && \
-    apt-get clean;
+# RVM key, for alternative Ruby packages
+RUN gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3;
 
 # Update the PMS cache
 RUN apt-get update;
 
 #
-# Ruby (via PMS)
+# RVM and Ruby (via rvm)
 #
 
-# Install Ruby 1.9.x (from brightbox)
-RUN apt-get -qqy install ruby1.9.3 ruby1.9.1-dev && \
+# Install RVM latest
+RUN wget -q get.rvm.io | bash -s stable;
+
+# Install system dependencies for ruby
+RUN /bin/bash -l -c "source /etc/profile.d/rvm.sh; rvm requirements" && \
     apt-get clean;
 
-#
-# Puppet (via PMS)
-#
+# Install Ruby 2.0-latest (2.2 not supported in puppet)
+RUN /bin/bash -l -c "source /etc/profile.d/rvm.sh; rvm install 2.0-latest";
 
-# Install Puppet 3.7.x (from puppetlabs)
-RUN apt-get -qqy install puppet && \
-    apt-get clean;
+# Set default Ruby interpreter
+RUN /bin/bash -l -c "source /etc/profile.d/rvm.sh; rvm use 2.0-latest --default";
 
 #
 # Rubygems (via rubygems)
@@ -99,6 +88,6 @@ RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc;
 # Install Bundler latest gem
 RUN /bin/bash -l -c "gem install bundler";
 
-# Install Librarian-puppet 2.0.1 (for ruby >=1.9.x) gems
-RUN /bin/bash -l -c "gem install librarian-puppet -v 2.0.1";
+# Install Puppet latest and Librarian-puppet latest (for ruby >=1.9.x) gems
+RUN /bin/bash -l -c "gem install puppet librarian-puppet";
 
