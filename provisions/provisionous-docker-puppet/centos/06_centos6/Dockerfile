@@ -34,8 +34,9 @@ RUN ["/bin/bash", "-c", "\
 #
 
 # Install system dependencies
-RUN yum -y install yum-plugin-fastestmirror bash-completion gnupg wget nano \
-    make gcc tar procps which && \
+RUN yum -y install yum-plugin-fastestmirror which \
+    gnupg ca-certificates wget curl make gcc tar procps \
+    bash-completion nano && \
     yum clean packages;
 
 # Upgrade the packages
@@ -48,6 +49,9 @@ RUN yum -y upgrade && \
 
 # Update keys
 RUN gpg --refresh-keys;
+
+# EPEL repo, for extra packages
+RUN yum -y install epel-release;
 
 # Puppet key/repo, for Puppet packages
 RUN wget -q http://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs && \

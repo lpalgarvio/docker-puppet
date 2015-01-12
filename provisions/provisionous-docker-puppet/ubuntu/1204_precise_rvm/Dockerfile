@@ -1,10 +1,10 @@
 ###############################################################################
 # Provisionous Docker/Puppet profile
-# OS: Ubuntu 14.04 (trusty)
-# Equivalent: Debian 8 (jessie)
+# OS: Ubuntu 12.04 (precise) RVM
+# Equivalent: Debian 7 (wheezy)
 ###############################################################################
 
-FROM ubuntu:trusty
+FROM ubuntu:precise
 MAINTAINER Luís Pedro Algarvio <lp.algarvio@gmail.com>
 
 #
@@ -36,15 +36,16 @@ RUN ["/bin/bash", "-c", "if [ \
 #
 
 # Install system dependencies
-RUN apt-get -qqy install apt-utils dialog bash-completion gnupg wget nano \
-    make gcc tar procps debianutils && \
+RUN apt-get -qy install apt-utils debianutils dialog \
+    gnupg ca-certificates wget curl make gcc tar procps \
+    bash-completion nano && \
     apt-get clean;
 
 # Replace /root files with files from /etc/skel
 RUN cp -R /etc/skel/. /root;
 
 # Upgrade the packages
-RUN apt-get -qqy upgrade && \
+RUN apt-get -qy upgrade && \
     apt-get clean;
 
 #
@@ -55,31 +56,28 @@ RUN apt-get -qqy upgrade && \
 RUN gpg --refresh-keys && \
     apt-key update;
 
-# Puppet key/repo, for updated Puppet packages
-RUN gpg --keyserver keys.gnupg.net --recv-keys 4BD6EC30 && \
-    apt-key adv --keyserver keys.gnupg.net --recv-keys 4BD6EC30 && \
-    wget -q http://apt.puppetlabs.com/puppetlabs-release-trusty.deb && \
-    dpkg -i puppetlabs-release-trusty.deb && \
-    apt-get clean;
+# RVM key, for alternative Ruby packages
+RUN gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3;
 
 # Update the PMS cache
 RUN apt-get update;
 
 #
-# Ruby (via PMS)
+# RVM and Ruby (via rvm)
 #
 
-# Install Ruby 1.9.x (from main)
-RUN apt-get -qqy install ruby1.9.3 ruby1.9.1-dev rubygems-integration && \
+# Install RVM latest
+RUN \curl -sSL https://get.rvm.io | bash -s stable;
+
+# Install system dependencies for ruby
+RUN /bin/bash -l -c "rvm requirements" && \
     apt-get clean;
 
-#
-# Puppet (via PMS)
-#
+# Install Ruby 2.0-latest (2.2 not supported in puppet)
+RUN /bin/bash -l -c "rvm install 2.0-latest";
 
-# Install Puppet 3.7.x (from puppetlabs)
-RUN apt-get -qqy install puppet && \
-    apt-get clean;
+# Set default Ruby interpreter
+RUN /bin/bash -l -c "rvm use 2.0-latest --default";
 
 #
 # Rubygems (via rubygems)
@@ -91,6 +89,6 @@ RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc;
 # Install Bundler latest gem
 RUN /bin/bash -l -c "gem install bundler";
 
-# Install Librarian-puppet 2.0.1 (for ruby >=1.9.x) gems
-RUN /bin/bash -l -c "gem install librarian-puppet -v 2.0.1";
+# Install Puppet latest and Librarian-puppet latest (for ruby >=1.9.x) gems
+RUN /bin/bash -l -c "gem install puppet librarian-puppet";
 

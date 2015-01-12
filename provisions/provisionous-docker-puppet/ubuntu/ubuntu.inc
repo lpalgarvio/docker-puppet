@@ -37,9 +37,9 @@ distro_tag_1004['desc']='Provisionous Docker/Puppet/Ubuntu/10.04 (lucid)';
 distro_tag_1004['url']='solict/provisionous-puppet-ubuntu:lucid';
 distro_tag_1004['shell']='/bin/bash';
 distro_tag_1004['provision']=true;
-distro_tag_1004['provision_dir']='10.04_lucid';
+distro_tag_1004['provision_dir']='1004_lucid';
 distro_tag_1004['container']=true;
-distro_tag_1004['container_dir']='10.04_lucid';
+distro_tag_1004['container_dir']='1004_lucid';
 distro_tag_1004['container_mnt']='/srv';
 
 # Ubuntu 10.04 (lucid) RVM
@@ -52,9 +52,9 @@ distro_tag_1004_rvm['desc']='Provisionous Docker/Puppet/Ubuntu/10.04 (lucid) RVM
 distro_tag_1004_rvm['url']='solict/provisionous-puppet-ubuntu:lucid_rvm';
 distro_tag_1004_rvm['shell']='/bin/bash';
 distro_tag_1004_rvm['provision']=true;
-distro_tag_1004_rvm['provision_dir']='10.04_lucid_rvm';
+distro_tag_1004_rvm['provision_dir']='1004_lucid_rvm';
 distro_tag_1004_rvm['container']=true;
-distro_tag_1004_rvm['container_dir']='10.04_lucid_rvm';
+distro_tag_1004_rvm['container_dir']='1004_lucid_rvm';
 distro_tag_1004_rvm['container_mnt']='/srv';
 
 # Ubuntu 12.04 (precise)
@@ -67,9 +67,9 @@ distro_tag_1204['desc']='Provisionous Docker/Puppet/Ubuntu/12.04 (precise)';
 distro_tag_1204['url']='solict/provisionous-puppet-ubuntu:precise';
 distro_tag_1204['shell']='/bin/bash';
 distro_tag_1204['provision']=true;
-distro_tag_1204['provision_dir']='12.04_precise';
+distro_tag_1204['provision_dir']='1204_precise';
 distro_tag_1204['container']=true;
-distro_tag_1204['container_dir']='12.04_precise';
+distro_tag_1204['container_dir']='1204_precise';
 distro_tag_1204['container_mnt']='/srv';
 
 # Ubuntu 12.04 (precise) RVM
@@ -82,9 +82,9 @@ distro_tag_1204_rvm['desc']='Provisionous Docker/Puppet/Ubuntu/12.04 (precise) R
 distro_tag_1204_rvm['url']='solict/provisionous-puppet-ubuntu:precise_rvm';
 distro_tag_1204_rvm['shell']='/bin/bash';
 distro_tag_1204_rvm['provision']=true;
-distro_tag_1204_rvm['provision_dir']='12.04_precise_rvm';
+distro_tag_1204_rvm['provision_dir']='1204_precise_rvm';
 distro_tag_1204_rvm['container']=true;
-distro_tag_1204_rvm['container_dir']='12.04_precise_rvm';
+distro_tag_1204_rvm['container_dir']='1204_precise_rvm';
 distro_tag_1204_rvm['container_mnt']='/srv';
 
 # Ubuntu 14.04 (trusty)
@@ -97,9 +97,9 @@ distro_tag_1404['desc']='Provisionous Docker/Puppet/Ubuntu/14.04 (trusty)';
 distro_tag_1404['url']='solict/provisionous-puppet-ubuntu:trusty';
 distro_tag_1404['shell']='/bin/bash';
 distro_tag_1404['provision']=true;
-distro_tag_1404['provision_dir']='14.04_trusty';
+distro_tag_1404['provision_dir']='1404_trusty';
 distro_tag_1404['container']=true;
-distro_tag_1404['container_dir']='14.04_trusty';
+distro_tag_1404['container_dir']='1404_trusty';
 distro_tag_1404['container_mnt']='/srv';
 
 # Ubuntu 14.04 (trusty) RVM
@@ -112,8 +112,8 @@ distro_tag_1404_rvm['desc']='Provisionous Docker/Puppet/Ubuntu/14.04 (trusty) RV
 distro_tag_1404_rvm['url']='solict/provisionous-puppet-ubuntu:trusty_rvm';
 distro_tag_1404_rvm['shell']='/bin/bash';
 distro_tag_1404_rvm['provision']=true;
-distro_tag_1404_rvm['provision_dir']='14.04_trusty_rvm';
+distro_tag_1404_rvm['provision_dir']='1404_trusty_rvm';
 distro_tag_1404_rvm['container']=true;
-distro_tag_1404_rvm['container_dir']='14.04_trusty_rvm';
+distro_tag_1404_rvm['container_dir']='1404_trusty_rvm';
 distro_tag_1404_rvm['container_mnt']='/srv';
 

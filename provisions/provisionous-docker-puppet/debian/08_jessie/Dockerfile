@@ -36,15 +36,16 @@ RUN ["/bin/bash", "-c", "if [ \
 #
 
 # Install system dependencies
-RUN apt-get -qqy install apt-utils dialog bash-completion gnupg wget nano \
-    make gcc tar procps debianutils && \
+RUN apt-get -qy install apt-utils debianutils dialog \
+    gnupg ca-certificates wget curl make gcc tar procps \
+    bash-completion nano && \
     apt-get clean;
 
 # Replace /root files with files from /etc/skel
 RUN cp -R /etc/skel/. /root;
 
 # Upgrade the packages
-RUN apt-get -qqy upgrade && \
+RUN apt-get -qy upgrade && \
     apt-get clean;
 
 #
@@ -63,7 +64,7 @@ RUN apt-get update;
 #
 
 # Install Ruby 2.0.x (from main)
-RUN apt-get -qqy install ruby ruby-dev rubygems-integration && \
+RUN apt-get -qy install ruby ruby-dev rubygems-integration && \
     apt-get clean;
 
 #
@@ -71,7 +72,7 @@ RUN apt-get -qqy install ruby ruby-dev rubygems-integration && \
 #
 
 # Install Puppet 3.7.x (from main)
-RUN apt-get -qqy install puppet && \
+RUN apt-get -qy install puppet && \
     apt-get clean;
 
 #

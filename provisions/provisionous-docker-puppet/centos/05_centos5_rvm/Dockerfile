@@ -1,6 +1,6 @@
 ###############################################################################
-# Provisionous Docker/Puppet RVM profile
-# OS: CentOS 5 (centos5)
+# Provisionous Docker/Puppet profile
+# OS: CentOS 5 (centos5) RVM
 # Equivalent: RHEL 5, Fedora 6 (zod)
 ###############################################################################
 
@@ -34,8 +34,9 @@ RUN ["/bin/bash", "-c", "\
 #
 
 # Install system dependencies
-RUN yum -y install yum-fastestmirror bash-completion gnupg wget nano \
-    make gcc tar procps which && \
+RUN yum -y install yum-fastestmirror which \
+    gnupg ca-certificates wget curl make gcc tar procps \
+    bash-completion nano && \
     yum clean packages;
 
 # Upgrade the packages
@@ -49,6 +50,9 @@ RUN yum -y upgrade && \
 # Update keys
 RUN gpg --refresh-keys;
 
+# EPEL repo, for extra packages
+RUN yum -y install epel-release;
+
 # RVM key, for alternative Ruby packages
 RUN gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3;
 
@@ -60,17 +64,17 @@ RUN yum makecache;
 #
 
 # Install RVM latest
-RUN wget -q get.rvm.io | bash -s stable;
+RUN \curl -sSL https://get.rvm.io | bash -s stable;
 
 # Install system dependencies for ruby
-RUN /bin/bash -l -c "rvm requirements" && \
+RUN /bin/bash -l -c "source /etc/profile.d/rvm.sh; rvm requirements" && \
     yum clean packages;
 
 # Install Ruby 2.0-latest (2.2 not supported in puppet)
-RUN /bin/bash -l -c "rvm install 2.0-latest";
+RUN /bin/bash -l -c "source /etc/profile.d/rvm.sh; rvm install 2.0-latest";
 
 # Set default Ruby interpreter
-RUN /bin/bash -l -c "rvm use 2.0-latest --default";
+RUN /bin/bash -l -c "source /etc/profile.d/rvm.sh; rvm use 2.0-latest --default";
 
 #
 # Rubygems (via rubygems)

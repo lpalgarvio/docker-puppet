@@ -1,12 +1,13 @@
 v0.9
 Minor version
 Development, refactoring and bug-fixing
-Fri Jan 9 21:21:47 2015 +0000
+Mon Jan 12 19:28:24 2015 +0000
 
 Changes since v0.8:
 
-* 485bd66caaeedee5f584248d5903350e5496bb87 by lpalgarvio: Reviewed provisions' requirements, repositories and packages; Updated and cleaned all the provisions' dockerfiles; Added dockerfiles for RVM provisions; Updated provisions configuration file; Updated TODO
-* 1f46491f09f63554fc02a638b5eb0e7d3f8aa6cc by lpalgarvio: Added CHANGELOG; Renamed provisions; Added custom provision
+* 775c8f35bc6a26287fe465dcee2c970f9e0d86b5 by lpalgarvio: Multiple fixes to Dockerfiles; Changed paths and variables for ubuntu tag provisions; Added missing tag-RVM support
+* 81eacffe6dde066f5ff3771e3c93fbb172f58498 by lpalgarvio: Reviewed provisions' requirements, repositories and packages; Updated and cleaned all the provisions' dockerfiles; Added dockerfiles for RVM provisions; Updated provisions configuration file; Updated TODO
+* 1f46491f09f63554fc02a638b5eb0e7d3f8aa6cc by lpalgarvio: Added CHANGELOG; Renamed provisions and containers; Added custom provision
 * 1f6ce8207dcac0e8d12286efe89358ffdce37889 by lpalgarvio: Refactored scripts to allow custom provisions
 * edc49bb58faee2a85da84f815491a74dff5da641 by lpalgarvio: Change order of arguments
 * 7e1575adec9b81f273314fe996d035d124e920a5 by lpalgarvio: Added dockerfiles for centos
@@ -17,7 +18,7 @@ Changes since v0.8:
 v0.8
 Minor version
 Development, refactoring and bug-fixing
-Tue Jan 6 2015 q16:35:42 2015 +0000
+Tue Jan 6 q16:35:42 2015 +0000
 
 Changes since v0.7:
 
@@ -29,7 +30,7 @@ Changes since v0.7:
 v0.7
 Minor version
 Development and refactoring
-Mon Jan 5 2015 20:40:18 2015 +0000
+Mon Jan 5 20:40:18 2015 +0000
 
 Changes since v0.6:
 
@@ -39,7 +40,7 @@ Changes since v0.6:
 v0.6
 Minor version
 Development, refactoring and bug-fixing
-Mon Jan 5 2015 14:48:55 2015 +0000
+Mon Jan 5 14:48:55 2015 +0000
 
 Changes since v0.5:
 
@@ -54,7 +55,7 @@ Changes since v0.5:
 v0.5
 Minor version
 Refactoring and bug-fixing
-Wed Dec 31 2014 16:58:49 2014 +0000
+Wed Dec 31 16:58:49 2014 +0000
 
 Changes since v0.4:
 
@@ -67,7 +68,7 @@ Changes since v0.4:
 v0.4
 Minor version
 Refactoring
-Mon Dec 29 2014 18:58:15 2014 +0000
+Mon Dec 29 18:58:15 2014 +0000
 
 Changes since v0.3:
 
@@ -78,7 +79,7 @@ Changes since v0.3:
 v0.3
 Minor version
 Development
-Sat Dec 27 2014 06:04:29 2014 +0000
+Sat Dec 27 06:04:29 2014 +0000
 
 Changes since v0.2:
 
@@ -88,7 +89,7 @@ Changes since v0.2:
 v0.2
 Minor version
 Development and bug-fixing
-Fri Dec 26 2014 23:21:11 2014 +0000
+Fri Dec 26 23:21:11 2014 +0000
 
 Changes since v0.1:
 
@@ -103,7 +104,7 @@ Changes since v0.1:
 v0.1
 Minor version
 Development
-Fri Dec 26 2014 10:45:11 2014 +0000
+Fri Dec 26 10:45:11 2014 +0000
 
 Changes since init:
 

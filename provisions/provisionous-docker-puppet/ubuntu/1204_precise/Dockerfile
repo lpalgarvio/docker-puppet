@@ -1,10 +1,10 @@
 ###############################################################################
 # Provisionous Docker/Puppet profile
-# OS: Ubuntu 10.04 (lucid)
-# Equivalent: Debian 6 (squeeze)
+# OS: Ubuntu 12.04 (precise)
+# Equivalent: Debian 7 (wheezy)
 ###############################################################################
 
-FROM ubuntu:lucid
+FROM ubuntu:precise
 MAINTAINER Luís Pedro Algarvio <lp.algarvio@gmail.com>
 
 #
@@ -36,15 +36,16 @@ RUN ["/bin/bash", "-c", "if [ \
 #
 
 # Install system dependencies
-RUN apt-get -qqy install apt-utils dialog bash-completion gnupg wget nano \
-    make gcc tar procps debianutils && \
+RUN apt-get -qy install apt-utils debianutils dialog \
+    gnupg ca-certificates wget curl make gcc tar procps \
+    bash-completion nano && \
     apt-get clean;
 
 # Replace /root files with files from /etc/skel
 RUN cp -R /etc/skel/. /root;
 
 # Upgrade the packages
-RUN apt-get -qqy upgrade && \
+RUN apt-get -qy upgrade && \
     apt-get clean;
 
 #
@@ -55,19 +56,11 @@ RUN apt-get -qqy upgrade && \
 RUN gpg --refresh-keys && \
     apt-key update;
 
-# Brightbox key/repo, for updated Ruby packages
-RUN gpg --keyserver keys.gnupg.net --recv-keys C3173AA6 && \
-    apt-key adv --keyserver keys.gnupg.net --recv-keys C3173AA6;
-RUN ["/bin/bash", "-c", "echo \"deb \
-    http://ppa.launchpad.net/brightbox/ruby-ng-experimental/ubuntu \
-    lucid   main\" > \
-    /etc/apt/sources.list.d/brightbox-ruby-ng-experimental.list;"]
-
 # Puppet key/repo, for updated Puppet packages
 RUN gpg --keyserver keys.gnupg.net --recv-keys 4BD6EC30 && \
     apt-key adv --keyserver keys.gnupg.net --recv-keys 4BD6EC30 && \
-    wget -q http://apt.puppetlabs.com/puppetlabs-release-lucid.deb && \
-    dpkg -i puppetlabs-release-lucid.deb && \
+    wget -q http://apt.puppetlabs.com/puppetlabs-release-precise.deb && \
+    dpkg -i puppetlabs-release-precise.deb && \
     apt-get clean;
 
 # Update the PMS cache
@@ -77,8 +70,8 @@ RUN apt-get update;
 # Ruby (via PMS)
 #
 
-# Install Ruby 1.9.x (from brightbox)
-RUN apt-get -qqy install ruby1.9.3 ruby1.9.1-dev && \
+# Install Ruby 1.9.x (from main)
+RUN apt-get -qy install ruby1.9.3 ruby1.9.1-dev && \
     apt-get clean;
 
 #
@@ -86,7 +79,7 @@ RUN apt-get -qqy install ruby1.9.3 ruby1.9.1-dev && \
 #
 
 # Install Puppet 3.7.x (from puppetlabs)
-RUN apt-get -qqy install puppet && \
+RUN apt-get -qy install puppet && \
     apt-get clean;
 
 #

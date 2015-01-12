@@ -1,6 +1,6 @@
 ###############################################################################
-# Provisionous Docker/Puppet RVM profile
-# OS: CentOS 7 (centos7)
+# Provisionous Docker/Puppet profile
+# OS: CentOS 7 (centos7) RVM
 # Equivalent: RHEL 7, Fedora 19 (schrodinger)
 ###############################################################################
 
@@ -34,8 +34,9 @@ RUN ["/bin/bash", "-c", "\
 #
 
 # Install system dependencies
-RUN yum -y install yum-plugin-fastestmirror bash-completion gnupg wget nano \
-    make gcc tar procps which && \
+RUN yum -y install yum-plugin-fastestmirror which \
+    gnupg ca-certificates wget curl make gcc tar procps \
+    bash-completion nano && \
     yum clean packages;
 
 # Upgrade the packages
@@ -49,6 +50,9 @@ RUN yum -y upgrade && \
 # Update keys
 RUN gpg --refresh-keys;
 
+# EPEL repo, for extra packages
+RUN yum -y install epel-release;
+
 # RVM key, for alternative Ruby packages
 RUN gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3;
 
@@ -60,7 +64,7 @@ RUN yum makecache;
 #
 
 # Install RVM latest
-RUN wget -q get.rvm.io | bash -s stable;
+RUN \curl -sSL https://get.rvm.io | bash -s stable;
 
 # Install system dependencies for ruby
 RUN /bin/bash -l -c "rvm requirements" && \

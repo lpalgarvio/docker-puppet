@@ -1,6 +1,6 @@
 ###############################################################################
-# Provisionous Docker/Puppet RVM profile
-# OS: Debian 6 (squeeze)
+# Provisionous Docker/Puppet profile
+# OS: Debian 6 (squeeze) RVM
 # Equivalent: Ubuntu 10.04 (lucid)
 ###############################################################################
 
@@ -36,15 +36,16 @@ RUN ["/bin/bash", "-c", "if [ \
 #
 
 # Install system dependencies
-RUN apt-get -qqy install apt-utils dialog bash-completion gnupg wget nano \
-    make gcc tar procps debianutils && \
+RUN apt-get -qy install apt-utils debianutils dialog \
+    gnupg ca-certificates wget curl make gcc tar procps \
+    bash-completion nano && \
     apt-get clean;
 
 # Replace /root files with files from /etc/skel
 RUN cp -R /etc/skel/. /root;
 
 # Upgrade the packages
-RUN apt-get -qqy upgrade && \
+RUN apt-get -qy upgrade && \
     apt-get clean;
 
 #
@@ -66,7 +67,7 @@ RUN apt-get update;
 #
 
 # Install RVM latest
-RUN wget -q get.rvm.io | bash -s stable;
+RUN \curl -sSL https://get.rvm.io | bash -s stable;
 
 # Install system dependencies for ruby
 RUN /bin/bash -l -c "source /etc/profile.d/rvm.sh; rvm requirements" && \
